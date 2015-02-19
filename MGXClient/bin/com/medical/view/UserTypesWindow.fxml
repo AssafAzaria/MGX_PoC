@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="550.0" prefWidth="700.0" styleClass="background" stylesheets="@../settings.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.medical.view.UserTypesWindowController">
+   <children>
+      <BorderPane prefHeight="550.0" prefWidth="700.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <VBox alignment="CENTER">
+               <children>
+                  <Label id="labelBigWhite" alignment="CENTER" prefHeight="46.0" prefWidth="375.0" text="User Types And Access Rights" BorderPane.alignment="CENTER" />
+                  <Separator opacity="0.63" prefWidth="200.0" />
+               </children>
+            </VBox>
+         </top>
+         <center>
+            <SplitPane dividerPositions="0.3495702005730659" prefHeight="160.0" prefWidth="200.0" styleClass="background" BorderPane.alignment="CENTER">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
+                     <children>
+                        <BorderPane prefHeight="502.0" prefWidth="240.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <top>
+                              <FlowPane alignment="CENTER_RIGHT" prefHeight="56.0" prefWidth="240.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <HBox>
+                                       <children>
+                                          <Button id="buttonAction" mnemonicParsing="false" text="\\" />
+                                          <Button mnemonicParsing="false" text="+" />
+                                          <Button mnemonicParsing="false" text="--" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </FlowPane>
+                           </top>
+                           <center>
+                              <BorderPane prefHeight="200.0" prefWidth="200.0" styleClass="background" BorderPane.alignment="CENTER">
+                                 <center>
+                                    <ListView fx:id="userTypesList" prefHeight="200.0" prefWidth="200.0" styleClass="background" BorderPane.alignment="CENTER" />
+                                 </center>
+                                 <top>
+                                    <Label id="labelUserType" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="240.0" text="User Type" BorderPane.alignment="CENTER_LEFT">
+                                       <padding>
+                                          <Insets left="10.0" />
+                                       </padding>
+                                    </Label>
+                                 </top>
+                              </BorderPane>
+                           </center>
+                        </BorderPane>
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
+                     <children>
+                        <BorderPane prefHeight="502.0" prefWidth="450.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <bottom>
+                              <FlowPane alignment="CENTER_RIGHT" prefHeight="56.0" prefWidth="450.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <HBox spacing="10.0">
+                                       <children>
+                                          <Button mnemonicParsing="false" text="Save" />
+                                          <Button mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
+                                       </children>
+                                       <padding>
+                                          <Insets right="10.0" />
+                                       </padding>
+                                    </HBox>
+                                 </children>
+                              </FlowPane>
+                           </bottom>
+                           <center>
+                              <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="438.0" prefWidth="450.0" styleClass="background" BorderPane.alignment="CENTER">
+                                 <content>
+                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="background">
+                                       <children>
+                                          <HBox layoutY="13.0" prefHeight="33.0" prefWidth="451.0" AnchorPane.bottomAnchor="358.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <Label layoutX="10.0" layoutY="13.0" prefHeight="30.0" prefWidth="135.0" styleClass="labelWhite" text="Registration" StackPane.alignment="CENTER_LEFT">
+                                                   <StackPane.margin>
+                                                      <Insets left="10.0" />
+                                                   </StackPane.margin>
+                                                   <padding>
+                                                      <Insets left="15.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Separator maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="356.0" />
+                                             </children>
+                                          </HBox>
+                                          <VBox layoutX="13.0" layoutY="47.0">
+                                             <children>
+                                                <CheckBox layoutX="14.0" layoutY="47.0" mnemonicParsing="false" text="Change Performing Technologist" textFill="#a19898" />
+                                             </children>
+                                          </VBox>
+                                          <HBox layoutY="89.0" prefHeight="33.0" prefWidth="451.0">
+                                             <children>
+                                                <Label layoutX="10.0" layoutY="13.0" prefHeight="30.0" prefWidth="70.0" styleClass="labelWhite" text="Study" StackPane.alignment="CENTER_LEFT">
+                                                   <padding>
+                                                      <Insets left="15.0" />
+                                                   </padding>
+                                                   <StackPane.margin>
+                                                      <Insets left="10.0" />
+                                                   </StackPane.margin>
+                                                </Label>
+                                                <Separator maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="382.0" />
+                                             </children>
+                                          </HBox>
+                                          <VBox layoutX="13.0" layoutY="138.0" spacing="10.0">
+                                             <children>
+                                                <CheckBox layoutX="14.0" layoutY="138.0" mnemonicParsing="false" text="Save Exposure Paramters" textFill="#a19898" />
+                                                <CheckBox layoutX="12.0" layoutY="177.0" mnemonicParsing="false" text="Save Exposure Parameters" textFill="#a19898" />
+                                                <CheckBox layoutX="21.0" layoutY="222.0" mnemonicParsing="false" text="Manualy Change Value" textFill="#a19898" />
+                                                <CheckBox layoutX="19.0" layoutY="257.0" mnemonicParsing="false" text="Save Exposure Indicator" textFill="#a19898" />
+                                             </children>
+                                          </VBox>
+                                          <HBox layoutY="258.0" prefHeight="33.0" prefWidth="451.0">
+                                             <children>
+                                                <Label layoutX="10.0" layoutY="13.0" prefHeight="30.0" prefWidth="80.0" styleClass="labelWhite" text="Archive" StackPane.alignment="CENTER_LEFT">
+                                                   <padding>
+                                                      <Insets left="15.0" />
+                                                   </padding>
+                                                   <StackPane.margin>
+                                                      <Insets left="10.0" />
+                                                   </StackPane.margin>
+                                                </Label>
+                                                <Separator maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="356.0" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                          <VBox layoutX="13.0" layoutY="289.0" spacing="20.0">
+                                             <children>
+                                                <CheckBox layoutX="14.0" layoutY="138.0" mnemonicParsing="false" text="Edit parameters" textFill="#a19898" />
+                                                <CheckBox layoutX="12.0" layoutY="177.0" mnemonicParsing="false" text="Delete" textFill="#a19898" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </ScrollPane>
+                           </center>
+                           <top>
+                              <Label prefHeight="56.0" prefWidth="443.0" styleClass="labelWhite" text="Access Rights" BorderPane.alignment="CENTER_LEFT">
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                              </Label>
+                           </top>
+                        </BorderPane>
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

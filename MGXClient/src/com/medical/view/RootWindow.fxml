@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane prefHeight="600.0" prefWidth="815.0" stylesheets="@../settings.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.medical.view.RootWindowController">
+   <top>
+      <ToolBar prefHeight="40.0" prefWidth="380.0" BorderPane.alignment="CENTER">
+        <items>
+            <HBox fillHeight="false" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="776.0" spacing="10.0" styleClass="toolbar-items">
+               <children>
+                  <Label id="labelFirst" alignment="CENTER" prefHeight="24.0" prefWidth="105.0" text="SYS NAME" />
+                  <Label prefHeight="20.0" prefWidth="134.0" />
+                  <Button centerShape="false" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleCogWheelButton">
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../resources/images/Anode6.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#handleLogButton">
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../resources/images/diskSpaceY.png" />
+                           </image>
+                           <viewport>
+                              <Rectangle2D />
+                           </viewport>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#handleLogButton" styleClass="toolbar-items">
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../resources/images/log.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#handleTempertureButton">
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../resources/images/statistics.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#handleTempertureButton">
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../resources/images/temperture.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#handleCogWheelButton">
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../resources/images/cogwheel.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <ComboBox fx:id="userCombo" prefHeight="25.0" prefWidth="137.0" />
+                  <Label prefHeight="29.0" prefWidth="84.0" text="20/10/2015" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="29.0" prefWidth="53.0" text="11:05" />
+               </children>
+            </HBox>
+        </items>
+      </ToolBar>
+   </top>
+</BorderPane>

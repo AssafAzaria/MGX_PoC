@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="655.0" prefWidth="750.0" stylesheets="@../settings.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.medical.view.SystemSettingsController">
+   <children>
+      <BorderPane prefHeight="555.0" prefWidth="720.0" styleClass="background" stylesheets="@../settings.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <Label id="labelBig" fx:id="headerLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="402.0" text="GEN 4 / XED 6 Settings" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets top="5.0" />
+               </BorderPane.margin>
+               <font>
+                  <Font name="DejaVu Sans Bold" size="29.0" />
+               </font>
+            </Label>
+         </top>
+         <center>
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="421.0" prefWidth="683.0" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </BorderPane.margin>
+               <content>
+                  <VBox maxHeight="1.7976931348623157E308" styleClass="background">
+                     <children>
+                        <BorderPane maxWidth="1.7976931348623157E308">
+                           <top>
+                              <Label prefHeight="32.0" prefWidth="250.0" text="Generator Acquisition" BorderPane.alignment="CENTER_LEFT">
+                                 <BorderPane.margin>
+                                    <Insets left="50.0" />
+                                 </BorderPane.margin></Label>
+                           </top>
+                           <right>
+                              <CheckBox mnemonicParsing="false" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </BorderPane.margin>
+                              </CheckBox>
+                           </right>
+                           <center>
+                              <TableView fx:id="table1" centerShape="false" maxWidth="1.7976931348623157E308" prefHeight="105.0" prefWidth="666.0" stylesheets="@../settings.css" BorderPane.alignment="CENTER">
+                                <columns>
+                                  <TableColumn fx:id="paramNameColumn1" prefWidth="180.0" text="Parameter Names" />
+                                    <TableColumn fx:id="valueColumn1" minWidth="9.0" prefWidth="105.0" text="Value" />
+                                    <TableColumn fx:id="minColumn1" minWidth="0.0" prefWidth="85.0" text="Min" />
+                                    <TableColumn fx:id="maxColumn1" prefWidth="85.0" text="Max" />
+                                    <TableColumn fx:id="unitColumn1" prefWidth="85.0" text="Unit" />
+                                    <TableColumn fx:id="lorColumn1" maxWidth="1.7976931348623157E308" prefWidth="85.0" text="Lor" />
+                                </columns>
+                                 <BorderPane.margin>
+                                    <Insets />
+                                 </BorderPane.margin>
+                              </TableView>
+                           </center>
+                        </BorderPane>
+                        <BorderPane maxWidth="1.7976931348623157E308">
+                           <center>
+                              <TableView fx:id="table2" centerShape="false" editable="true" maxWidth="1.7976931348623157E308" prefHeight="105.0" stylesheets="@../settings.css" BorderPane.alignment="CENTER">
+                                 <columns>
+                                    <TableColumn fx:id="paramNameColumn2" prefWidth="180.0" text="Parameter Names" />
+                                    <TableColumn fx:id="valueColumn2" minWidth="9.0" prefWidth="105.0" text="Value" />
+                                    <TableColumn fx:id="minColumn2" minWidth="0.0" prefWidth="85.0" text="Min" />
+                                    <TableColumn fx:id="maxColumn2" prefWidth="85.0" text="Max" />
+                                    <TableColumn fx:id="unitColumn2" prefWidth="85.0" text="Unit" />
+                                    <TableColumn fx:id="lorColumn2" maxWidth="1.7976931348623157E308" prefWidth="85.0" text="Lor" />
+                                 </columns>
+                                 <BorderPane.margin>
+                                    <Insets />
+                                 </BorderPane.margin>
+                              </TableView>
+                           </center>
+                           <right>
+                              <CheckBox mnemonicParsing="false" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </BorderPane.margin>
+                              </CheckBox>
+                           </right>
+                           <top>
+                              <Label prefHeight="32.0" prefWidth="250.0" text="XED Voltage" BorderPane.alignment="CENTER_LEFT">
+                                 <BorderPane.margin>
+                                    <Insets left="50.0" />
+                                 </BorderPane.margin>
+                              </Label>
+                           </top>
+                        </BorderPane>
+                        <BorderPane maxWidth="1.7976931348623157E308">
+                           <center>
+                              <TableView fx:id="table3" centerShape="false" editable="true" maxWidth="1.7976931348623157E308" prefHeight="105.0" stylesheets="@../settings.css" BorderPane.alignment="CENTER">
+                                 <columns>
+                                    <TableColumn fx:id="paramNameColumn3" prefWidth="180.0" text="Parameter Names" />
+                                    <TableColumn fx:id="valueColumn3" minWidth="9.0" prefWidth="105.0" text="Value" />
+                                    <TableColumn fx:id="minColumn3" minWidth="0.0" prefWidth="85.0" text="Min" />
+                                    <TableColumn fx:id="maxColumn3" prefWidth="85.0" text="Max" />
+                                    <TableColumn fx:id="unitColumn3" prefWidth="85.0" text="Unit" />
+                                    <TableColumn fx:id="lorColumn3" maxWidth="1.7976931348623157E308" prefWidth="85.0" text="Lor" />
+                                 </columns>
+                                 <BorderPane.margin>
+                                    <Insets />
+                                 </BorderPane.margin>
+                              </TableView>
+                           </center>
+                           <right>
+                              <CheckBox mnemonicParsing="false" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </BorderPane.margin>
+                              </CheckBox>
+                           </right>
+                           <top>
+                              <Label prefHeight="32.0" prefWidth="250.0" text="XED Current" BorderPane.alignment="CENTER_LEFT">
+                                 <BorderPane.margin>
+                                    <Insets left="50.0" />
+                                 </BorderPane.margin>
+                              </Label>
+                           </top>
+                        </BorderPane>
+                        <BorderPane maxWidth="1.7976931348623157E308">
+                           <center>
+                              <TableView fx:id="table4" centerShape="false" editable="true" maxWidth="1.7976931348623157E308" prefHeight="105.0" stylesheets="@../settings.css" BorderPane.alignment="CENTER">
+                                 <columns>
+                                    <TableColumn fx:id="paramNameColumn4" prefWidth="180.0" text="Parameter Names" />
+                                    <TableColumn fx:id="valueColumn4" minWidth="9.0" prefWidth="105.0" text="Value" />
+                                    <TableColumn fx:id="minColumn4" minWidth="0.0" prefWidth="85.0" text="Min" />
+                                    <TableColumn fx:id="maxColumn4" prefWidth="85.0" text="Max" />
+                                    <TableColumn fx:id="unitColumn4" prefWidth="85.0" text="Unit" />
+                                    <TableColumn fx:id="lorColumn4" maxWidth="1.7976931348623157E308" prefWidth="85.0" text="Lor" />
+                                 </columns>
+                                 <BorderPane.margin>
+                                    <Insets />
+                                 </BorderPane.margin>
+                              </TableView>
+                           </center>
+                           <right>
+                              <CheckBox mnemonicParsing="false" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </BorderPane.margin>
+                              </CheckBox>
+                           </right>
+                           <top>
+                              <Label prefHeight="32.0" prefWidth="250.0" text="Temperture" BorderPane.alignment="CENTER_LEFT">
+                                 <BorderPane.margin>
+                                    <Insets left="50.0" />
+                                 </BorderPane.margin>
+                              </Label>
+                           </top>
+                        </BorderPane>
+                     </children>
+                  </VBox>
+               </content>
+               <styleClass>
+                  <String fx:value="bordered-panel" />
+                  <String fx:value="background" />
+               </styleClass>
+            </ScrollPane>
+         </center>
+         <bottom>
+            <FlowPane alignment="CENTER_RIGHT" hgap="20.0" prefHeight="48.0" prefWidth="720.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox spacing="20.0">
+                     <children>
+                        <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handleUpdate" text="Update" />
+                        <Button mnemonicParsing="false" onAction="#handleExit" text="Exit" />
+                     </children>
+                  </HBox>
+               </children>
+               <BorderPane.margin>
+                  <Insets right="20.0" />
+               </BorderPane.margin>
+            </FlowPane>
+         </bottom>
+      </BorderPane>
+   </children>
+</AnchorPane>

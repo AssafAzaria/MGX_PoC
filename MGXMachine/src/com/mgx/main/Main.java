@@ -6,12 +6,13 @@
 package com.mgx.main;
 
 import com.mgx.manager.GenArrayManager;
-import com.thales.shared.loggers.ActivityLogger;
-import com.thales.shared.commands.GetXEDsCommand;
-import com.thales.shared.events.Event;
-import com.thales.shared.events.EventType;
-import com.thales.shared.commands.Command;
-import com.thales.shared.networking.client.IPConnection;
+import com.mgx.servicesProvider.ServicesProviderManager;
+import com.mgx.shared.loggers.ActivityLogger;
+import com.mgx.shared.commands.GetXEDsCommand;
+import com.mgx.shared.events.Event;
+import com.mgx.shared.events.EventType;
+import com.mgx.shared.commands.Command;
+import com.mgx.shared.networking.client.IPConnection;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

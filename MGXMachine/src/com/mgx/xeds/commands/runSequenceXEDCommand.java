@@ -18,5 +18,10 @@ public class runSequenceXEDCommand extends XEDCommand {
     public String dataToString() {
         return "no data";
     }
+
+    @Override
+    public Object getData() {
+        return null;
+    }
     
 }

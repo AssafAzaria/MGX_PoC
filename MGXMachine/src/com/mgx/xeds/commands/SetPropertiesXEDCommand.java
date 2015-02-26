@@ -6,7 +6,7 @@
 package com.mgx.xeds.commands;
 
 import com.mgx.manager.XedArrayProxy;
-import com.thales.shared.XEDPropertyValueUpdate;
+import com.mgx.shared.XEDPropertyValueUpdate;
 
 
 public class SetPropertiesXEDCommand extends XEDCommand {

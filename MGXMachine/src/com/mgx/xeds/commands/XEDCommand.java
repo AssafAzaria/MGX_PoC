@@ -5,7 +5,7 @@
  */
 package com.mgx.xeds.commands;
 
-import com.thales.shared.commands.Command;
+import com.mgx.shared.commands.Command;
 
 /**
  *

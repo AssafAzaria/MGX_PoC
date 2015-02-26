@@ -5,7 +5,7 @@
  */
 package com.mgx.xeds.events;
 
-import com.thales.shared.XEDInfo;
+import com.mgx.shared.XEDInfo;
 
 
 public class SendInfoXEDResponse extends XEDResponse {

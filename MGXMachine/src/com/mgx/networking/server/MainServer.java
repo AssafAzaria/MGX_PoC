@@ -5,15 +5,15 @@
  */
 package com.mgx.networking.server;
 
-import com.thales.shared.networking.server.ServerBase;
-import com.thales.shared.networking.server.IPServerConnection;
-import com.thales.shared.Configuration;
-import com.thales.shared.commands.Command;
-import com.thales.shared.events.Event;
-import com.thales.shared.loggers.ActivityLogger;
-import com.thales.shared.networking.CommandHandler;
-import com.thales.shared.networking.client.ConnectionBase;
-import com.thales.shared.networking.server.IPCommandsServer;
+import com.mgx.shared.networking.server.ServerBase;
+import com.mgx.shared.networking.server.IPServerConnection;
+import com.mgx.shared.Configuration;
+import com.mgx.shared.commands.Command;
+import com.mgx.shared.events.Event;
+import com.mgx.shared.loggers.ActivityLogger;
+import com.mgx.shared.networking.CommandHandler;
+import com.mgx.shared.networking.client.ConnectionBase;
+import com.mgx.shared.networking.server.IPCommandsServer;
 import java.io.IOException;
 import java.net.Socket;
 

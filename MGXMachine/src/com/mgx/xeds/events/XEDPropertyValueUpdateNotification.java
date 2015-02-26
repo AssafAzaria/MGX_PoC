@@ -5,8 +5,8 @@
  */
 package com.mgx.xeds.events;
 
-import com.thales.shared.XEDInfo;
-import com.thales.shared.events.Notification;
+import com.mgx.shared.XEDInfo;
+import com.mgx.shared.events.Notification;
 
 
 public class XEDPropertyValueUpdateNotification extends XEDNotification {

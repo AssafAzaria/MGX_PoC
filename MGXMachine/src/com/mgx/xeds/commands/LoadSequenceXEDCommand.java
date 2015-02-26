@@ -5,7 +5,7 @@
  */
 package com.mgx.xeds.commands;
 
-import com.thales.shared.sequences.SequenceInfo;
+import com.mgx.shared.sequences.SequenceInfo;
 
 /**
  *

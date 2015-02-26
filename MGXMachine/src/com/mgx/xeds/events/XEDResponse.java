@@ -6,7 +6,7 @@
 package com.mgx.xeds.events;
 
 
-import com.thales.shared.events.Response;
+import com.mgx.shared.events.Response;
 
 /**
  *

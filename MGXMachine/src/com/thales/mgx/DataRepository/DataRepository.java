@@ -5,9 +5,9 @@
  */
 package com.thales.mgx.DataRepository;
 
-import com.thales.shared.Configuration;
-import com.thales.shared.loggers.ActivityLogger;
-import com.thales.shared.sequences.SequenceInfo;
+import com.mgx.shared.Configuration;
+import com.mgx.shared.loggers.ActivityLogger;
+import com.mgx.shared.sequences.SequenceInfo;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -37,7 +37,7 @@ public class DataRepository {
         init();
     }
     private void init() throws IOException {
-        path = Paths.get(Configuration.storageFilePath);
+        path = Paths.get("deprecated");
         if (!Files.exists(path)) {
             createNewStorage(path);
         }

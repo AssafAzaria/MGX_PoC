@@ -6,15 +6,15 @@
 package com.mgx.networking.server;
 
 import com.mgx.manager.XedArrayProxy;
-import com.thales.shared.networking.server.ServerBase;
-import com.thales.shared.commands.Command;
-import com.thales.shared.events.Event;
-import com.thales.shared.loggers.ActivityLogger;
-import com.thales.shared.networking.EventsHandler;
-import com.thales.shared.networking.client.ConnectionBase;
+import com.mgx.shared.networking.server.ServerBase;
+import com.mgx.shared.commands.Command;
+import com.mgx.shared.events.Event;
+import com.mgx.shared.loggers.ActivityLogger;
+import com.mgx.shared.networking.EventsHandler;
+import com.mgx.shared.networking.client.ConnectionBase;
 import java.io.IOException;
 import java.net.Socket;
-import com.thales.shared.Configuration;
+import com.mgx.shared.Configuration;
 
 
 public class XEDsProxyServer<

@@ -21,5 +21,10 @@ public class GetInfoXEDCommand extends XEDCommand {
     public String dataToString() {
         return "";
     }
+
+    @Override
+    public Object getData() {
+        return null;
+    }
     
 }

@@ -1,0 +1,444 @@
+.root {
+    -fx-background-color: #1d1d1d;
+}
+
+
+.bordered-panel {
+-fx-border-width: 2.0;
+-fx-border-color: rgb(118.0,136.0,192.0); 
+}
+
+.background{
+	 -fx-background-color: #1d1d1d;
+}
+
+.bordered-white {
+-fx-border-width: 1.0;
+-fx-border-color: white ;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Scroll pane                                                                 *
+ *                                                                             *
+ ******************************************************************************/
+
+.scroll-pane {
+    -fx-background-insets: 0.0;
+    -fx-padding: 0.0;
+    -fx-background: #1d1d1d;
+    -fx-background-color: #1d1d1d;
+}
+
+
+
+.scroll-pane .scroll-bar{
+	-fx-background-color: #1d1d1d;
+
+    
+}
+
+.scroll-bar .thumb {
+-fx-background-color:
+    linear-gradient(#686868 0.0%, #232723 25.0%, #373837 75.0%, #757575 100.0%),
+        linear-gradient(#020b02, #3a3a3a),
+        linear-gradient(#9d9e9d 0.0%, #6b6a6b 20.0%, #343534 80.0%, #242424 100.0%),
+        linear-gradient(#8a8a8a 0.0%, #6b6a6b 20.0%, #343534 80.0%, #262626 100.0%),
+        linear-gradient(#777777 0.0%, #606060 50.0%, #505250 51.0%, #2a2b2a 100.0%);
+
+ -fx-background-radius: 0.5em; /* makes sure this remains circular */
+}
+/*******************************************************************************
+ *                                                                             *
+ * Button                                                                     *
+ *                                                                             *
+ ******************************************************************************/
+
+.button {
+    -fx-background-color: 
+        linear-gradient(#686868 0.0%, #232723 25.0%, #373837 75.0%, #757575 100.0%),
+        linear-gradient(#020b02, #3a3a3a),
+        linear-gradient(#9d9e9d 0.0%, #6b6a6b 20.0%, #343534 80.0%, #242424 100.0%),
+        linear-gradient(#8a8a8a 0.0%, #6b6a6b 20.0%, #343534 80.0%, #262626 100.0%),
+        linear-gradient(#777777 0.0%, #606060 50.0%, #505250 51.0%, #2a2b2a 100.0%);
+    -fx-background-insets: 0.0,1.0,4.0,5.0,6.0;
+    -fx-background-radius: 9.0,8.0,5.0,4.0,3.0;
+    -fx-padding: 3.0 3.0 3.0 3.0;
+    -fx-font-family: "Arial";
+    -fx-font-size: 16.0px;
+   	-fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(255.0,255.0,255.0,0.2) , 1.0, 0.0 , 0.0 , 1.0);
+}
+.button .text {
+    -fx-effect: dropshadow( one-pass-box , black , 0.0, 0.0 , 0.0 , -1.0 );
+}
+
+
+.button:focused, .button:hover {
+    -fx-background-color:
+        rgba(255.0, 255.0, 255.0, 0.08),
+        rgba(0.0, 0.0, 0.0, 0.8),
+        #090a0c,
+        linear-gradient(#4a5661 0.0%, #1f2429 20.0%, #1f242a 100.0%),
+        linear-gradient(#3f4950, #23282e),
+        radial-gradient(center 50.0% 0.0%, radius 100.0%, rgba(135.0,142.0,148.0,0.9),
+        rgba(255.0,255.0,255.0,0.0));
+}
+
+.button:pressed {
+    -fx-padding: 3.0 3.0 3.0 3.0;
+    -fx-background-insets: 1.0 0.0 0.0 0.0,1.0 0.0 2.0 0.0, 1.0 0.0 3.0 0.0, 1.0 0.0 4.0 0.0;
+}
+
+
+/*******************************************************************************
+ *                                                                             *
+ * Check box                                                                     *
+ *                                                                             *
+ ******************************************************************************/
+.check-box .box {
+    -fx-background-color:rgb(118.0,136.0,192.0);
+    -fx-background-insets: 0.0 -1.6 -2.0 -1.6, -1.4, 0.0, 1.0, 2.0;
+    -fx-background-size: 70.0;
+}
+
+.check-box:focused .box {
+    -fx-background-color: rgb(118.0,136.0,192.0);
+    -fx-background-insets: 0.0 -1.6 -2.0 -1.6, -1.4, 0.0, 1.0, 2.0;
+    -fx-background-size: 70.0;
+}
+
+.check-box:focused .mark {
+    -fx-background-color: white;
+    
+}
+
+
+/*******************************************************************************
+ *                                                                             *
+ * Label                                                                     *
+ *                                                                             *
+ ******************************************************************************/
+.label {
+    -fx-font-family: "Arial";
+    -fx-font-size: 16.0;
+    -fx-text-fill: white; /*  rgb(240.0,213.0,43.0); */
+    -fx-font-weight: bold;
+    -fx-effect: innershadow( one-pass-box , rgba(0.0, 0.0, 0.0, 0.8), 0.0, 0.0 , 0.0 , -1.0 );
+}
+
+#labelBorder{
+	-fx-border-width: 2.0;
+    -fx-border-color: rgb(153.0,204.0,204.0),
+        rgba(0.0, 0.0, 0.0, 0.8),
+        #090a0c,
+        linear-gradient(#4a5661 0.0%, rgb(153.0,204.0,204.0) 20.0%, #1f242a 100.0%),
+        linear-gradient(#242a2e, rgb(153.0,204.0,204.0)),
+        radial-gradient(center 50.0% 0.0%, radius 100.0%, rgba(135.0,142.0,148.0,0.9),
+        rgb(153.0,204.0,204.0));
+	-fx-border-radius: 8.0;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Top Panel toolbar
+ *                                                                             *
+ ******************************************************************************/
+.topPanel .toolbar{
+	-fx-border-width: 2.0;
+    -fx-border-color: rgb(153.0,204.0,204.0),
+        rgba(0.0, 0.0, 0.0, 0.8),
+        #090a0c,
+        linear-gradient(#4a5661 0.0%, rgb(153.0,204.0,204.0) 20.0%, #1f242a 100.0%),
+        linear-gradient(#242a2e, rgb(153.0,204.0,204.0)),
+        radial-gradient(center 50.0% 0.0%, radius 100.0%, rgba(135.0,142.0,148.0,0.9),
+        rgb(153.0,204.0,204.0));
+	-fx-border-radius: 13.0;
+}
+
+.topPanel .toolbar .button{
+	 -fx-background-color: 
+        linear-gradient(#686868 0.0%, #232723 25.0%, #373837 75.0%, #757575 100.0%),
+        linear-gradient(#020b02, #3a3a3a),
+        linear-gradient(#9d9e9d 0.0%, #6b6a6b 20.0%, #343534 80.0%, #242424 100.0%),
+        linear-gradient(#8a8a8a 0.0%, #6b6a6b 20.0%, #343534 80.0%, #262626 100.0%),
+        linear-gradient(#777777 0.0%, #606060 50.0%, #505250 51.0%, #2a2b2a 100.0%);
+    -fx-background-insets: 0.0,1.0,4.0,5.0,6.0;
+    -fx-background-radius: 9.0,8.0,5.0,4.0,3.0;
+    -fx-padding: 3.0, 3.0, 3.0, 3.0;
+    -fx-font-family: "Arial";
+    -fx-font-size: 16.0px;
+   	-fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(255.0,255.0,255.0,0.2) , 1.0, 0.0 , 0.0 , 1.0);
+}
+
+.topPanel .toolbar .button:focused, .topPanel .toolbar .button:hover {
+    -fx-background-color:
+        rgba(255.0, 255.0, 255.0, 0.08),
+        rgba(0.0, 0.0, 0.0, 0.8),
+        #090a0c,
+        linear-gradient(#4a5661 0.0%, #1f2429 20.0%, #1f242a 100.0%),
+        linear-gradient(#3f4950, #23282e),
+        radial-gradient(center 50.0% 0.0%, radius 100.0%, rgba(135.0,142.0,148.0,0.9),
+        rgba(255.0,255.0,255.0,0.0));
+}
+
+.topPanel .toolbar .button:pressed {
+    -fx-padding: 3.0 3.0 3.0 3.0;
+    -fx-background-insets: 1.0 0.0 0.0 0.0,1.0 0.0 2.0 0.0, 1.0 0.0 3.0 0.0, 1.0 0.0 4.0 0.0;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Adjustments panel
+ *                                                                             *
+ ******************************************************************************/
+.adjust-panel{
+	 -fx-background-color: 
+        linear-gradient(#686868 0.0%, #232723 25.0%, #373837 75.0%, #757575 100.0%),
+        linear-gradient(#020b02, #3a3a3a),
+        linear-gradient(#9d9e9d 0.0%, #6b6a6b 20.0%, #343534 80.0%, #242424 100.0%),
+        linear-gradient(#8a8a8a 0.0%, #6b6a6b 20.0%, #343534 80.0%, #262626 100.0%),
+        linear-gradient(#777777 0.0%, #606060 50.0%, #505250 51.0%, #2a2b2a 100.0%);
+    -fx-background-insets: 0.0;
+    -fx-background-radius: 5.0;
+    -fx-padding: 5.0, 5.0, 5.0, 5.0;
+    
+    
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(255.0,255.0,255.0,0.2) , 1.0, 0.0 , 0.0 , 1.0);
+}
+
+.adjust-panel .button{
+	-fx-pref-width: 35.0px;
+    -fx-background-insets: 1.0, 2.0, 3.0, 4.0;
+    
+    -fx-background-radius: 5.0;
+    
+}
+
+.adjust-panel .button:pressed {
+    -fx-padding: 3.0 3.0 3.0 3.0;
+    -fx-background-insets: 2.0, 3.0, 4.0, 5.0;
+}
+
+.adjust-panel .label{
+	-fx-text-fill: white;
+	-fx-font-family: "Arial";
+    -fx-font-size: 14.0px;
+}
+
+.adjust-panel .labelBlue{
+	-fx-text-fill: rgb(61.0,179.0,218.0);
+	
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Line chart                                                                     *
+ *                                                                             *
+ ******************************************************************************/
+.chart{
+	-fx-background-color: #1d1d1d;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Titled Pane - that comes from the right                                                                  *
+ *                                                                             *
+ ******************************************************************************/
+
+.titled-pane 
+{
+	-fx-text-fill: gray;
+}
+.titled-pane:focused 
+{
+	-fx-text-fill: white;
+}
+
+
+.titled-pane > .title 
+{
+	-fx-background-color: #1d1d1d;
+	-fx-text-fill: white;
+	-fx-background-insets: 0.0, 1.0, 2.0;
+	-fx-background-radius: 5.0 5.0 0.0 0.0, 4.0 4.0 0.0 0.0, 3.0 3.0 0.0 0.0;
+	-fx-padding: 0.166667em 0.833333em 0.25em 0.833333em; 
+}
+
+
+.titled-pane > *.content 
+{
+
+
+ -fx-background-color: 
+        linear-gradient(#686868 0.0%, #232723 25.0%, #373837 75.0%, #757575 100.0%),
+        linear-gradient(#020b02, #3a3a3a),
+        linear-gradient(#9d9e9d 0.0%, #6b6a6b 20.0%, #343534 80.0%, #242424 100.0%),
+        linear-gradient(#8a8a8a 0.0%, #6b6a6b 20.0%, #343534 80.0%, #262626 100.0%),
+        linear-gradient(#777777 0.0%, #606060 50.0%, #505250 51.0%, #2a2b2a 100.0%);
+	-fx-box-border: linear-gradient(to bottom, derive(-fx-color,-2.0%), 
+				derive(-fx-color,65.0%) 12.0%,  derive(-fx-color,23.0%) 88.0%, 
+				derive(-fx-color,50.0%) 99.0%, -fx-box-border);
+	-fx-background-insets: 0.0, 0.0 1.0 1.0 1.0;
+	
+	-fx-border-radius: 7.0;
+    
+	-fx-border-width: 2.0;
+	-fx-border-color: rgb(118.0,136.0,192.0); 
+ }
+
+.titled-pane:focused > .title > .arrow-button .arrow 
+{
+-fx-background-color: white;
+}
+
+
+
+/*******************************************************************************
+ *                                                                             *
+ * Text Field                                                                  *
+ *                                                                             *
+ ******************************************************************************/
+
+.text-field {
+	-fx-effect: innershadow(three-pass-box, gray, 12.0 , 0.5, 1.0, 1.0);
+    -fx-background-color: #a9a9a9, rgb(230.0,230.0,250.0), rgb(230.0,230.0,250.0); 
+    -fx-background-insets: 0.0 -1.0 -1.0 -1.0, 0.0 0.0 0.0 0.0, 0.0 -1.0 3.0 -1.0;
+}
+
+.text-field:focused {
+    -fx-background-color: #a9a9a9 , rgb(243.0,243.0,251.0) , rgb(243.0,243.0,251.0);
+    -fx-background-insets: 0.0 -1.0 -1.0 -1.0, 0.0 0.0 0.0 0.0, 0.0 -1.0 3.0 -1.0;
+}
+
+
+.tf-data {
+	-fx-background-color: #1d1d1d;
+	
+	-fx-text-fill: yellowgreen ;
+	-fx-font-weight: bold;
+	-fx-font-size: 12.0px;
+	
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Tool bar                          
+ *                                                                             *
+ ******************************************************************************/
+
+.tool-bar{
+	-fx-background-color: #1d1d1d;
+}
+
+.tool-bar .button{
+	-fx-background-radius: 0.0;
+    -fx-background-color: #1d1d1d;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-weight: bold;
+	-fx-font-size: 12.0px;
+	-fx-text-fill: yellowgreen;
+	-fx-background-insets: 0.0 0.0 0.0 0.0, 0.0, 1.0, 2.0;
+	-fx-padding: 0.0 3.0 0.0 3.0 ;
+}
+.tool-bar .button:pressed, .toolbar .button:default:hover:pressed {
+ 	 -fx-border-color: rgb(191.0,191.0,191.0);
+ 	 -fx-border-width: 1.0;
+}
+
+.tool-bar .label{
+ 	-fx-font-family: "Arial";
+    -fx-font-size: 16.0;
+    -fx-text-fill: #d0d0d0;
+    -fx-font-weight: bold;
+    -fx-effect: innershadow( one-pass-box , rgba(0.0, 0.0, 0.0, 0.8), 0.0, 0.0 , 0.0 , -1.0 );
+}
+
+.tool-bar #labelFirst{
+	-fx-background-color: white;
+	-fx-text-fill: black;
+	-fx-font-size: 10.0;
+    
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Combo box                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+
+ #comboBox .list-cell
+ {
+    -fx-font-family: arial;
+    -fx-font-size: 16.0px;
+    -fx-text-fill: #d0d0d0; 
+ }
+ 
+.combo-box-base  
+{
+
+-fx-background-color: #1d1d1d, #1d1d1d, #1d1d1d, #1d1d1d;
+
+-fx-background-radius: 5.0, 5.0, 4.0, 3.0;
+-fx-background-insets: 0.0 0.0 -1.0 0.0, 0.0, 1.0, 2.0;
+-fx-padding: 0.0;
+
+}
+
+.combo-box-base:disabled {
+-fx-opacity: 0.4;
+}
+
+/*
+.combo-box .arrow, .combo-box .arrow-button{
+    -fx-background-color: transparent;
+}*/
+
+/*******************************************************************************
+ *                                                                             *
+ * TabPane                                                                     *
+ *                                                                             *
+ ******************************************************************************/
+
+.tab-pane .tab {
+    -fx-background-color: 
+        linear-gradient(#686868 0.0%, #232723 25.0%, #373837 75.0%, #757575 100.0%),
+        linear-gradient(#020b02, #3a3a3a),
+        linear-gradient(#9d9e9d 0.0%, #6b6a6b 20.0%, #343534 80.0%, #242424 100.0%),
+        linear-gradient(#8a8a8a 0.0%, #6b6a6b 20.0%, #343534 80.0%, #262626 100.0%),
+        linear-gradient(#777777 0.0%, #606060 50.0%, #505250 51.0%, #2a2b2a 100.0%);
+        
+      	-fx-pref-width: 110.0px;
+      	-fx-pref-height: 35.0px;
+      	-fx-alignment: CENTER;
+    	
+    	-fx-font-family: "Arial";
+	    -fx-font-size: 14px;
+	    -fx-text-fill: white;
+	    
+	    -fx-background-insets: 0.0 1.0 1.0 0.0, 1.0 2.0 1.0 1.0, 2.0 3.0 1.0 2.0;
+    	-fx-background-radius: 3.0 3.0 0.0 0.0, 2.0 2.0 0.0 0.0, 1.0 1.0 0.0 0.0;
+    	
+	
+}
+.tab-pane .tab:selected {
+    -fx-background-color: rgb(61.0,179.0,218.0);
+}
+
+/* .tab-pane .tab-content-area {
+    -fx-background-color: cyan;
+}*/
+
+.tab-pane .tab *.tab-label {
+    -fx-text-fill: white;
+    -fx-alignment: CENTER;
+    
+}
+
+.tab-pane .tab-header-background{
+    -fx-background-color: #1d1d1d;
+    
+}
+

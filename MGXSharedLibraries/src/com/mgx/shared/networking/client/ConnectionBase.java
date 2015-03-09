@@ -10,7 +10,7 @@ import com.mgx.shared.commands.Command;
 import com.mgx.shared.loggers.ActivityLogger;
 import com.mgx.shared.events.Event;
 import com.mgx.shared.networking.Transmitable;
-import com.mgx.shared.networking.ResponseHandler;
+import com.mgx.shared.networking.InboundParcelHandler;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -22,6 +22,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -31,7 +33,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @param <Outbound>
  */
 public abstract class ConnectionBase<
-        Inbound extends Transmitable, Outbound extends Transmitable, Handler extends ResponseHandler> {
+        Inbound extends Transmitable, Outbound extends Transmitable, Handler extends InboundParcelHandler> {
 
     private ActivityLogger l = new ActivityLogger(getClientName());
     private Socket socket;
@@ -258,8 +260,8 @@ public abstract class ConnectionBase<
                         }
                         l.logI(fName + "Got inbound packet " + inboundPacket.getName());
 
-                        handlers.forEachValue(MAX_PRIORITY, (ResponseHandler responseHandler) -> {
-                            responseHandler.handleResponse(inboundPacket, getInstance());
+                        handlers.forEachValue(MAX_PRIORITY, (InboundParcelHandler responseHandler) -> {
+                            responseHandler.handleInboundParcel(inboundPacket, getInstance());
                         });
 
                     } catch (InterruptedException ex) {
@@ -346,17 +348,33 @@ public abstract class ConnectionBase<
         transmiterThread.start();
     }
 
+    /**
+     * Called when an incoming parcel has arrived and need to be dispatched to 
+     * listeners
+     * @param parcel the incoming Transimitable
+     * @throws InterruptedException dispatchingQueue is interrupted 
+     */
     public synchronized void dispatch(Inbound parcel) throws InterruptedException {
         l.logD("adding Transmitable " + parcel.getName() + " to the inboundQueue");
         dispatchingQueue.put(parcel);
 
     }
 
+    /**
+     * send parcel on this connection
+     * @param parcel The Transmitable to send
+     * @throws InterruptedException transmitingQueue is interrupted
+     */
     public synchronized void transmit(Outbound parcel) throws InterruptedException {
+        if (parcel == null) {
+            l.logE("can't transmit null parcel");
+            return;
+        }
         l.logD("adding Transmitable " + parcel.getName() + " to the outboundQueue");
         transmitingQueue.put(parcel);
     }
 
+    
     /**
      * Register a handler class and provide a UID for it. Each time that a
      * command is posted it should include the UID provided by this method

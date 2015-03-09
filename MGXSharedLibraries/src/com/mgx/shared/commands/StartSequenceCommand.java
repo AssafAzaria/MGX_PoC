@@ -22,5 +22,10 @@ public class StartSequenceCommand extends Command {
     public Integer getData() {
         return (Integer)data;
     }
+
+    @Override
+    public Class<?> getResponseClass() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

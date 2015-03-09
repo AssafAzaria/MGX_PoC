@@ -4,22 +4,19 @@
  * and open the template in the editor.
  */
 package com.mgx.shared.networking;
-
-import com.mgx.shared.events.Response;
+import com.mgx.shared.events.Notification;
 import com.mgx.shared.networking.client.ConnectionBase;
-
 /**
  *
  * @author Asaf
  */
-public interface ResponseHandler extends InboundParcelHandler {
+public interface NotificationHandler extends InboundParcelHandler{
     @Override
     default public void handleInboundParcel(Transmitable parcel, ConnectionBase connection) {
-        if (parcel instanceof Response) {
-            handleResponse((Response)parcel, connection);
+        if (parcel instanceof Notification) {
+            handleNotification((Notification)parcel, connection);
         }
     }
     
-    public void handleResponse(Response response, ConnectionBase connectoin);
-    
+    public void handleNotification(Notification notification, ConnectionBase connection);
 }

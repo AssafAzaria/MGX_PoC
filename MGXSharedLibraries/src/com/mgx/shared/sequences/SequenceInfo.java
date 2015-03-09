@@ -15,10 +15,10 @@ public class SequenceInfo implements Serializable {
 
     public int sequenceId;
     public String sequenceName;
-    public int preSeqDelay;
+    public float preSeqDelay;
     public int seqRepeat;
     public XPulseInfo[] pulses; //list of XPulses;TBD: multiple XEDs operate in a single XPulse?
-    public int postSeqDelay;
+    public float postSeqDelay;
     
     @Override
     public String toString() {

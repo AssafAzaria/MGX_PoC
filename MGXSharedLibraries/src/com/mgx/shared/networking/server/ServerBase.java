@@ -7,7 +7,7 @@ package com.mgx.shared.networking.server;
 
 import com.mgx.shared.Configuration;
 import com.mgx.shared.loggers.ActivityLogger;
-import com.mgx.shared.networking.ResponseHandler;
+import com.mgx.shared.networking.InboundParcelHandler;
 import com.mgx.shared.networking.Transmitable;
 import com.mgx.shared.networking.client.ConnectionBase;
 import java.io.IOException;
@@ -24,12 +24,12 @@ import java.util.logging.Logger;
  * @author Asaf
  * @param <Inbound> Type of the Inbound Transmitable the server accept
  * @param <Outbound> Type of the Outbound Transmitable the server delivers to clients
- * @param <InboundHandler> The type of a ResponseHandler that can handle Inbound messages
+ * @param <InboundHandler> The type of a InboundHandler that can handle Inbound messages
  */
 public abstract class ServerBase<
         Inbound extends Transmitable, 
         Outbound extends Transmitable, 
-        InboundHandler extends ResponseHandler> implements ResponseHandler<Inbound>{
+        InboundHandler extends InboundParcelHandler> implements InboundParcelHandler{
     
     
     private ServerSocket server;
@@ -37,7 +37,7 @@ public abstract class ServerBase<
     private ActivityLogger l;
     private Thread serverThread;
     private volatile boolean keepRunnig = true;
-    private ConcurrentHashMap<Integer, InboundHandler> handlers = new ConcurrentHashMap<>(Configuration.QueueSize);
+    private ConcurrentHashMap<Integer, InboundParcelHandler> handlers = new ConcurrentHashMap<>(Configuration.QueueSize);
     
     private NewConnectionHandler newConnectionHandler = null;
     
@@ -133,13 +133,17 @@ public abstract class ServerBase<
      * @param response
      * @param connection 
      */
-    @Override
-    public void handleResponse(Inbound response, ConnectionBase connection) {
+    
+    public void handleInboundParcel(Transmitable parcel, ConnectionBase connection) {
         //connections.putIfAbsent(response.getUID(), connection);
+        if(parcel == null) {
+            l.logE("Received null parcel from "+connection.toString() + "ignoring");
+            return;
+        }
         Enumeration elements =  handlers.elements();
         while (elements.hasMoreElements()) {
-            InboundHandler handle = (InboundHandler)elements.nextElement();
-            handle.handleResponse(response, connection);
+            InboundParcelHandler handle = (InboundParcelHandler)elements.nextElement();
+            handle.handleInboundParcel(parcel, connection);
         }
         
     }
@@ -168,4 +172,5 @@ public abstract class ServerBase<
     
        
     }
+
 }

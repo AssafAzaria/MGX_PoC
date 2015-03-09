@@ -5,9 +5,8 @@
  */
 package com.mgx.shared.util;
 
-import com.mgx.shared.XEDInfo;
-import com.mgx.shared.XEDPropertyInfo;
-import com.mgx.shared.XEDPropertyValueUpdate;
+import com.mgx.shared.XEDDescriptor;
+import com.mgx.shared.XEDProperty;
 
 /**
  *
@@ -16,16 +15,15 @@ import com.mgx.shared.XEDPropertyValueUpdate;
 public class XEDUtils {
     
     /**
-     * Utility function that creates XEDPropertyValueUpdate from XEDInfo
+     * Utility function that creates XEDPropertyValueUpdate from XEDDescriptor
      * @param XED the XED to take information from
      * @param propertyIndex the index of the property in the XED you want to use for creating XEDPropertyValueUpdate
      * @param newValue the new value to assign to the newly created XEDPropertyValueUpdate
      * @return newly created XEDPropertyValueUpdate
      */
-    public static final XEDPropertyValueUpdate getXEDPropertyUpdateFromXEDInfo(XEDInfo XED, int propertyIndex, float newValue){
-        return new XEDPropertyValueUpdate(XED.properties[propertyIndex].name, newValue, 
-                XED.Name, XED.UID );
-    }
+    //public static final XEDPropertyValueUpdate getXEDPropertyUpdateFromXEDInfo(XEDDescriptor XED, int propertyIndex, float newValue){
+       // return new XEDPropertyValueUpdate(XED.getProperties()[propertyIndex].name, newValue, XED.getName(), XED.getUID());
+    //}
     
     /**
      * Utility function to convert XEDPropertyInfo into XEDPropertyValueUpdate
@@ -33,10 +31,9 @@ public class XEDUtils {
      * @param propertyInfo the property to convert
      * @return 
      */
-     public static final XEDPropertyValueUpdate convertPropertyInfoToPropertyValueUpdate(XEDInfo ownerXED, XEDPropertyInfo propertyInfo){
-        return new XEDPropertyValueUpdate(propertyInfo.name, propertyInfo.value, 
-                ownerXED.Name, ownerXED.UID );
-    }
+    // public static final XEDPropertyValueUpdate convertPropertyInfoToPropertyValueUpdate(XEDDescriptor ownerXED, XEDPropertyInfo propertyInfo){
+       // return new XEDPropertyValueUpdate(propertyInfo.name, propertyInfo.value, ownerXED.getName(), ownerXED.getUID());
+    //}
     /**
      * Creates XEDPropertyValueUpdate[] from all XED.properties
  NOTE:XED.properties.length must be equal to values.length
@@ -44,14 +41,14 @@ public class XEDUtils {
      * @param values array of new values to assign to the created XEDPropertyValueUpdate
      * @return array of XEDPropertyValueUpdate objects
      */
-    public static final XEDPropertyValueUpdate[] getXEDPropertiesUpdateFromXEDInfo(XEDInfo XED, float values[]) {
-        XEDPropertyValueUpdate properties[] = new XEDPropertyValueUpdate[XED.properties.length];
+   // public static final XEDPropertyValueUpdate[] getXEDPropertiesUpdateFromXEDInfo(XEDDescriptor XED, float values[]) {
+     //   XEDPropertyValueUpdate properties[] = new XEDPropertyValueUpdate[XED.getProperties().length];
         
-        for (int i = 0; i < XED.properties.length; i++) {
-            properties[i] = getXEDPropertyUpdateFromXEDInfo(XED, i, values[i]);
-        }
+      //  for (int i = 0; i < XED.getProperties().length; i++) {
+     //       properties[i] = getXEDPropertyUpdateFromXEDInfo(XED, i, values[i]);
+      //  }
         
-        return properties;
+      //  return properties;
         
-    }
+  //  }
 }

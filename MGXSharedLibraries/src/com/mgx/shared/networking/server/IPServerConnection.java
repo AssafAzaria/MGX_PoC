@@ -7,7 +7,7 @@ package com.mgx.shared.networking.server;
 
 import com.mgx.shared.commands.Command;
 import com.mgx.shared.events.Event;
-import com.mgx.shared.networking.ResponseHandler;
+import com.mgx.shared.networking.InboundParcelHandler;
 import com.mgx.shared.networking.Transmitable;
 import com.mgx.shared.networking.client.ConnectionBase;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.net.Socket;
 public class IPServerConnection<
         Inbound extends Command, 
         Outbound extends Event, 
-        Handler extends ResponseHandler> 
+        Handler extends InboundParcelHandler> 
 extends ConnectionBase {
 
     public IPServerConnection(Socket socket) throws IOException {

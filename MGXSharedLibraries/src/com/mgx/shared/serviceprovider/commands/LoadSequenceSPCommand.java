@@ -30,5 +30,10 @@ public class LoadSequenceSPCommand extends Command{
     public int getSequenceID() {
         return this.getData();
     }
+
+    @Override
+    public Class<?> getResponseClass() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

@@ -7,18 +7,15 @@ package com.mgx.shared.networking;
 import com.mgx.shared.commands.Command;
 import com.mgx.shared.networking.client.ConnectionBase;
 
-public abstract class CommandHandler<ResponseType extends Command> implements ResponseHandler<ResponseType> {
+public interface CommandHandler extends InboundParcelHandler {
 
-    protected abstract void handleCommand(Command command, ConnectionBase connection);
+    public void handleCommand(Command command, ConnectionBase connection);
     
     @Override
-    public void handleResponse(Command response, ConnectionBase connection) {
-        handleCommand(response, connection);
+    default public void handleInboundParcel(Transmitable command, ConnectionBase connection) {
+       
+        handleCommand((Command)command, connection);
     }
 
-    @Override
-    public String getName() {
-        return this.getClass().getSimpleName();
-    }
     
 }

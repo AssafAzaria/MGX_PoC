@@ -8,7 +8,7 @@ package com.mgx.shared.networking.client;
 import com.mgx.shared.Configuration;
 import com.mgx.shared.commands.Command;
 import com.mgx.shared.events.Event;
-import com.mgx.shared.networking.ResponseHandler;
+import com.mgx.shared.networking.InboundParcelHandler;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -16,7 +16,7 @@ import java.net.Socket;
 
 public class IPConnection<Inbound extends Event,
         Outbound extends Command,
-        Handler extends ResponseHandler> extends ConnectionBase {
+        Handler extends InboundParcelHandler> extends ConnectionBase {
 
     public IPConnection() throws IOException {
         super(Configuration.MGXServerPort, Configuration.getLocalhost());

@@ -23,5 +23,10 @@ public class SetSequnceCommand extends Command {
     public SequenceInfo getData() {
         return (SequenceInfo)data;
     }
+
+    @Override
+    public Class<?> getResponseClass() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

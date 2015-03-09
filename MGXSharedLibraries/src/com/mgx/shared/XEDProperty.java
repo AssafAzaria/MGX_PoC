@@ -5,11 +5,13 @@
  */
 package com.mgx.shared;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Asaf
  */
-public class XEDProperty {
+public class XEDProperty implements Serializable{
 
     public String name;
     public float minValue;
@@ -18,6 +20,10 @@ public class XEDProperty {
     public String units;
     public float increments;
     
+    /**
+     * no default ctor
+     */
+    private XEDProperty(){}
 
     /**
      * Create representation of XED property
@@ -28,7 +34,7 @@ public class XEDProperty {
      * @param units units of this properties (example: msec)
      * @param increments the change a value can have 
      */
-    public XEDProperty(String name, float minValue, float maxValue, float value, String units, float increments) {
+    public XEDProperty(String name, String units, float increments, float minValue, float maxValue, float value) {
         this.name = name;
         this.minValue = minValue;
         this.maxValue = maxValue;
@@ -121,4 +127,13 @@ public class XEDProperty {
         this.units = units;
     }
     
+    @Override
+    public String toString() {
+        return "Property "+name
+                + " value = " + value
+                + " units = " + units
+                + " minValue = " + minValue
+                + " maxValue = " + maxValue
+                + " increments = " + increments;
+    }
 }

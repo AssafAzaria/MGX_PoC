@@ -5,15 +5,17 @@
  */
 package com.mgx.shared.events;
 
-import com.mgx.shared.XEDInfo;
-import com.mgx.shared.XEDPropertyValueUpdate;
+import com.mgx.shared.CFPGADescriptor;
+import com.mgx.shared.XEDProperty;
+
+
 
 
 public class XEDUpdateNotification extends Notification {
 
     static final int eventUID =456;
-    public XEDUpdateNotification(String dispatcherName, XEDPropertyValueUpdate property) {
-        super(dispatcherName, eventUID, property, XEDUpdateNotification.class.getName());
+    public XEDUpdateNotification(String dispatcherName, CFPGADescriptor cFPGA) {
+        super(dispatcherName, eventUID, cFPGA, XEDUpdateNotification.class.getSimpleName());
     }
 
     @Override
@@ -23,8 +25,8 @@ public class XEDUpdateNotification extends Notification {
     }
 
     @Override
-    public XEDPropertyValueUpdate getData() {
-        return (XEDPropertyValueUpdate)data;
+    public CFPGADescriptor getData() {
+        return (CFPGADescriptor)data;
     }
     
 }

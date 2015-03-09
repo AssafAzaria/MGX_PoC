@@ -15,17 +15,17 @@ public class XPulseInfo implements Serializable{
     public int pulseID = 0;
     public int XEDNum = 0;
     public FSType fs;
-    public int tubeCurrent = 0;
-    public int pulseVoltage = 0;
-    public int postPulseVoltage = 0;
+    public float tubeCurrent = 0;
+    public float pulseVoltage = 0;
+    public float postPulseVoltage = 0;
     
     /**
      * Repeat info
      */
     public int repeat = 0;
-    public int prePulseDelay = 0;
-    public int pulseWidth = 0;
-    public int postPulseDelay = 0;
+    public float prePulseDelay = 0;
+    public float pulseWidth = 0;
+    public float postPulseDelay = 0;
     
     @Override
     public String toString() {

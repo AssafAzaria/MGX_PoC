@@ -31,5 +31,10 @@ public class DeleteSequenceSPCommand extends Command{
     public Integer getData() {
         return (Integer)this.data;
     }
+
+    @Override
+    public Class<?> getResponseClass() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

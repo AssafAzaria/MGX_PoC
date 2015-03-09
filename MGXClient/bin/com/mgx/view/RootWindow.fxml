@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="600.0" prefWidth="815.0" stylesheets="@../settings.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mgx.view.RootWindowController">
+<BorderPane prefHeight="600.0" prefWidth="940.0" stylesheets="@../newsettings.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mgx.view.RootWindowController">
    <top>
-      <ToolBar prefHeight="40.0" prefWidth="380.0" BorderPane.alignment="CENTER">
+      <ToolBar prefHeight="40.0" prefWidth="380.0" BorderPane.alignment="TOP_CENTER">
         <items>
             <HBox fillHeight="false" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="776.0" spacing="10.0" styleClass="toolbar-items">
                <children>

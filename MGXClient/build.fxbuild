@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="ASCII"?>
 <anttasks:AntTask xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:anttasks="http://org.eclipse.fx.ide.jdt/1.0" buildDirectory="${project}/build">
   <deploy packagingFormat="all">
-    <application name="MGXClient" mainclass="com.mgx.Main" version="1.0" toolkit="fx"/>
-    <info title="MGXClient" vendor="RBH"/>
+    <application name="Medical" mainclass="com.mgx.Main" version="1.0" toolkit="fx"/>
+    <info title="MGX" vendor="Assaf Azaria"/>
   </deploy>
   <signjar/>
 </anttasks:AntTask>

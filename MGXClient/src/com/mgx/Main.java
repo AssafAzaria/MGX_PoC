@@ -9,6 +9,7 @@ import com.mgx.control.RemoteMGXController;
 import com.mgx.model.*;
 import com.mgx.view.ControlWindowController;
 import com.mgx.view.LoginWindowController;
+import com.mgx.view.NewControlWindowController;
 import com.mgx.view.RootWindowController;
 import com.mgx.view.SystemSettingsController;
 import com.mgx.view.UserTypesWindowController;
@@ -37,10 +38,12 @@ public class Main extends Application
 	//
 	private Stage primaryStage;
 	private AnchorPane controlWindow;
-	private AnchorPane systemSettingsWindow;
+	//private AnchorPane systemSettingsWindow;
 	private AnchorPane userTypesWindow;
 	private AnchorPane loginWindow;
 	private BorderPane rootWindow;
+	private TabPane settingsWindowTabPane = new TabPane();
+	private BorderPane newControlWindow;
 	
 	/**
 	 * The list of system settings controllers. We have one for each tab/XED
@@ -64,37 +67,21 @@ public class Main extends Application
 	 */
 	private ObservableList<UserType> userTypeData = FXCollections
 			.observableArrayList();
+	
+	
 
 	/**
-	 * Tab pane
+	 * Setting window Tab pane
 	 */
-	private TabPane tabPane = new TabPane();
-
+	
 	/**
 	 * Constructor - initialize tables with dummy data
 	 */
 	public Main()
 	{
 		// Add some sample data
-		personData.add("TOMO 1");
-		personData.add("CBCT");
-		personData.add("CAT Scan");
-		personData.add("Test 1");
-		personData.add("Test 2");
-		personData.add("Test 3");
-		personData.add("Test 4");
-		personData.add("Test 5");
-
-		xedData.add("XED#");
-		xedData.add("XED#");
-		xedData.add("XED#");
-		xedData.add("XED#");
-
-		for (UserType t : UserType.values())
-		{
-			userTypeData.add(t);
-		}
-
+		addSampleData();
+		
 	}
 
 	@Override
@@ -110,10 +97,14 @@ public class Main extends Application
 		//loadSystemSettingsWindow();
 		loadUserTypesWindow();
 		loadLoginWindow();
+		loadNewControlWindow();
 
 		// Start by showing login window
-		Scene scene = new Scene(loginWindow);
-		primaryStage.setScene(scene);
+//		Scene scene = new Scene(newControlWindow);
+//		primaryStage.setScene(scene);
+
+		showRootWindowWithControl();
+		primaryStage.setResizable(true);
 		primaryStage.show();
 	}
 
@@ -127,12 +118,20 @@ public class Main extends Application
 		primaryStage.setScene(scene);
 
 		showSystemSettingsWindow();
+	}
+	
+	public final void showRootWindowWithControl()
+	{
+		// Show the scene containing the root layout.
+		Scene scene = new Scene(rootWindow);
+		primaryStage.setScene(scene);
 
+		showNewControlWindow();
 	}
 
 	public final void showSystemSettingsWindow()
 	{
-		rootWindow.setCenter(tabPane);
+		rootWindow.setCenter(settingsWindowTabPane);
 	}
 
 	public final void showUserTypesWindow()
@@ -144,6 +143,12 @@ public class Main extends Application
 	{
 		rootWindow.setCenter(controlWindow);
 	}
+	
+	public final void showNewControlWindow()
+	{
+		rootWindow.setCenter(newControlWindow);
+	}
+
 
 	//
 	// Windows loading
@@ -242,28 +247,28 @@ public class Main extends Application
 	/**
 	 * loads the system settings window (without showing)
 	 */
-	private void loadSystemSettingsWindow()
-	{
-
-		try
-		{
-			// Load person overview.
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(Main.class
-					.getResource("view/SystemSettingsWindow.fxml"));
-			systemSettingsWindow = (AnchorPane) loader.load();
-
-			// Give the controller access to the main app.
-			SystemSettingsController controller = loader.getController();
-
-			controller.setMainApp(this);
-
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-
-		}
-	}
+//	private void loadSystemSettingsWindow()
+//	{
+//
+//		try
+//		{
+//			// Load person overview.
+//			FXMLLoader loader = new FXMLLoader();
+//			loader.setLocation(Main.class
+//					.getResource("view/SystemSettingsWindow.fxml"));
+//			systemSettingsWindow = (AnchorPane) loader.load();
+//
+//			// Give the controller access to the main app.
+//			SystemSettingsController controller = loader.getController();
+//
+//			controller.setMainApp(this);
+//
+//		} catch (IOException e)
+//		{
+//			e.printStackTrace();
+//
+//		}
+//	}
 
 	/**
 	 * loads the system settings window (without showing)
@@ -277,7 +282,7 @@ public class Main extends Application
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(Main.class
 					.getResource("view/SystemSettingsWindow.fxml"));
-			systemSettingsWindow = (AnchorPane) loader.load();
+			AnchorPane systemSettingsWindow = (AnchorPane) loader.load();
 
 			// Give the controller access to the main app.
 			SystemSettingsController controller = loader.getController();
@@ -287,7 +292,7 @@ public class Main extends Application
 
 			Tab tab = new Tab(xed.Name);
 			tab.setContent(systemSettingsWindow);
-			tabPane.getTabs().add(tab);
+			settingsWindowTabPane.getTabs().add(tab);
 
 			// Update controller with XED
 			controller.updateData(xed);
@@ -298,6 +303,28 @@ public class Main extends Application
 		}
 	}
 
+	/**
+	 * Loads the user types window (without showing)
+	 */
+	private void loadNewControlWindow()
+	{
+
+		try
+		{
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class
+					.getResource("view/NewControlWindow.fxml"));
+			newControlWindow = (BorderPane) loader.load();
+
+			// Give the controller access to the main app.
+			NewControlWindowController controller = loader.getController();
+			controller.setMainApp(this);
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	//
 	// Data return functions to be used by controllers
 	//
@@ -418,5 +445,28 @@ public class Main extends Application
 	{
 		// Launches the application - constructor() and start() will be called,
 		launch(args);
+	}
+	
+	private void addSampleData()
+	{
+		personData.add("TOMO 1");
+		personData.add("CBCT");
+		personData.add("CAT Scan");
+		personData.add("Test 1");
+		personData.add("Test 2");
+		personData.add("Test 3");
+		personData.add("Test 4");
+		personData.add("Test 5");
+
+		xedData.add("XED#");
+		xedData.add("XED#");
+		xedData.add("XED#");
+		xedData.add("XED#");
+
+		for (UserType t : UserType.values())
+		{
+			userTypeData.add(t);
+		}
+
 	}
 }

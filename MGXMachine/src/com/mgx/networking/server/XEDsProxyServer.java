@@ -10,7 +10,7 @@ import com.mgx.shared.networking.server.ServerBase;
 import com.mgx.shared.commands.Command;
 import com.mgx.shared.events.Event;
 import com.mgx.shared.loggers.ActivityLogger;
-import com.mgx.shared.networking.EventsHandler;
+import com.mgx.shared.networking.ResponseHandler;
 import com.mgx.shared.networking.client.ConnectionBase;
 import java.io.IOException;
 import java.net.Socket;
@@ -18,7 +18,7 @@ import com.mgx.shared.Configuration;
 
 
 public class XEDsProxyServer<
-        Inbound extends Event, Outbound extends Command, Handler extends EventsHandler> extends ServerBase {
+        Inbound extends Event, Outbound extends Command, Handler extends ResponseHandler> extends ServerBase {
 
     private static ActivityLogger l = new ActivityLogger(XEDsProxyServer.class.getSimpleName());
     
@@ -40,7 +40,7 @@ public class XEDsProxyServer<
         return null;
     }
 
-    public int addEventHandler(EventsHandler hanndler) {
+    public int addEventHandler(ResponseHandler hanndler) {
         return super.addInboundHandler(hanndler);
     }
 

@@ -3,8 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXMachine/src/com/thales/mgx/DataRepository/DataRepository.java</file>
+            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXMachine/src/com/mgx/spi/commands/GetAllXEDsSPICommand.java</file>
             <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXMachine/src/com/mgx/manager/GenArrayManager.java</file>
+            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXMachine/src/com/mgx/spi/commands/SetPropertiesSPICommand.java</file>
+            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXMachine/src/com/mgx/spi/responses/XEDsListSPIResponse.java</file>
+            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXMachine/src/com/mgx/manager/XedArrayProxy.java</file>
             <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXMachine/src/com/mgx/main/Main.java</file>
         </group>
     </open-files>

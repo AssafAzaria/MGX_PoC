@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mgx.xeds.commands;
+package com.mgx.spi.commands;
 
 import com.mgx.manager.XedArrayProxy;
 
 
-public class runSequenceXEDCommand extends XEDCommand {
+public class RunSequenceSPICommand extends SPICommand {
     static final private int UID=761;
-    public runSequenceXEDCommand() {
-        super(UID, runSequenceXEDCommand.class.getSimpleName(), XedArrayProxy.UID, XedArrayProxy.class.getSimpleName(), null);
+    public RunSequenceSPICommand() {
+        super(UID, RunSequenceSPICommand.class.getSimpleName(), null);
     }
 
     @Override
@@ -22,6 +22,11 @@ public class runSequenceXEDCommand extends XEDCommand {
     @Override
     public Object getData() {
         return null;
+    }
+
+    @Override
+    public Class<?> getResponseClass() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

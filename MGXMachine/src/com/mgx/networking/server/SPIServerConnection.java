@@ -7,8 +7,6 @@ package com.mgx.networking.server;
 
 import com.mgx.shared.commands.Command;
 import com.mgx.shared.events.Event;
-import com.mgx.shared.networking.ResponseHandler;
-import com.mgx.shared.networking.Transmitable;
 import com.mgx.shared.networking.CommandHandler;
 import com.mgx.shared.networking.client.ConnectionBase;
 import java.io.IOException;

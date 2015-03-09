@@ -5,22 +5,9 @@
  */
 package com.mgx.main;
 
-import com.mgx.manager.GenArrayManager;
-import com.mgx.servicesProvider.ServicesProviderManager;
+import com.mgx.manager.MGXManager;
 import com.mgx.shared.loggers.ActivityLogger;
-import com.mgx.shared.commands.GetXEDsCommand;
-import com.mgx.shared.events.Event;
-import com.mgx.shared.events.EventType;
-import com.mgx.shared.commands.Command;
-import com.mgx.shared.networking.client.IPConnection;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import static java.lang.System.exit;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -31,8 +18,9 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        GenArrayManager manager = GenArrayManager.getInstance();
+    public static void main(String[] args) throws IOException {
+        
+        MGXManager manager = MGXManager.getInstance();
         manager.startSystem();
         
         

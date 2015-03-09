@@ -5,45 +5,44 @@
  */
 package com.mgx.manager;
 
-import com.mgx.shared.XEDInfo;
-import com.mgx.shared.XEDPropertyInfo;
-import com.mgx.xeds.commands.GetInfoXEDCommand;
-import com.mgx.xeds.commands.SetPropertyXEDCommand;
-import com.mgx.xeds.events.PropertyValueUpdateXEDNotification;
-import com.mgx.xeds.events.SendInfoXEDResponse;
+import com.mgx.spi.commands.CFPGAIndetifySPICommand;
 import com.mgx.shared.networking.ClientsTransmiter;
 import com.mgx.shared.Configuration;
-import com.mgx.shared.XEDPropertyValueUpdate;
 import com.mgx.shared.loggers.ActivityLogger;
 import com.mgx.shared.commands.Command;
-import com.mgx.shared.commands.XEDSetPropertyCommand;
+import com.mgx.shared.commands.UpdateSettingsMGXCommand;
 import com.mgx.shared.events.CommandErrorResponse;
-import com.mgx.shared.events.CommandOKResponse;
 import com.mgx.shared.events.Event;
-import com.mgx.shared.events.GetXEDsResponse;
+import com.mgx.shared.events.MGXNodesResponse;
 import com.mgx.shared.events.Response;
-import com.mgx.shared.events.XEDUpdateNotification;
-import com.mgx.shared.networking.ResponseHandler;
 import com.mgx.shared.networking.client.ConnectionBase;
-import com.mgx.networking.server.SPIServerConnection;
 import com.mgx.shared.networking.server.NewConnectionHandler;
 import com.mgx.networking.server.XEDsProxyServer;
-import com.mgx.xeds.commands.LoadSequenceXEDCommand;
-import com.mgx.xeds.commands.runSequenceXEDCommand;
-import com.mgx.xeds.events.SequenceLoadedXEDResponse;
-import com.mgx.xeds.events.SequenceExecutionDoneXEDNotification;
-import com.mgx.shared.XED;
-import com.mgx.shared.commands.XEDSetPropertiesCommand;
-import com.mgx.shared.events.SequenceCompleteNotificatoin;
-import com.mgx.shared.networking.EventsHandler;
+import com.mgx.shared.CFPGADescriptor;
+import com.mgx.shared.XEDDescriptor;
+import com.mgx.shared.XEDProperty;
+import com.mgx.shared.commands.CommandAction;
+import com.mgx.shared.commands.SequenceAcquisitionMGXCommand;
+import com.mgx.shared.commands.UpdateSettingsMGXCommand;
+import com.mgx.shared.events.CommandOKResponse;
+import com.mgx.shared.events.SequenceCompleteNotification;
+import com.mgx.shared.events.SequenceLoadedNotification;
+import com.mgx.shared.events.XEDUpdateNotification;
+import com.mgx.shared.events.XPulseActualRunValuesNotification;
+import com.mgx.shared.networking.ResponseHandler;
+import com.mgx.shared.networking.ServiceProviderConnector;
 import com.mgx.shared.sequences.SequenceInfo;
-import com.mgx.shared.sequences.XPulseInfo;
-import java.util.ArrayList;
-import java.util.Enumeration;
+import com.mgx.shared.serviceprovider.commands.mgxprivate.LoadLastCFPGASettingsSPCommand;
+import com.mgx.shared.serviceprovider.commands.mgxprivate.SaveLastCFPGASettingsSPCommand;
+import com.mgx.spi.commands.AcuireSequenceSPICommand;
+import com.mgx.spi.commands.RunSequenceSPICommand;
+import com.mgx.spi.commands.UpdateXEDsPropertiesSPICommand;
+import com.mgx.spi.responses.CFPGADescriptorSPIResponse;
+import com.mgx.spi.responses.SequenceExecutionCompleteSPIREsponse;
+import com.mgx.spi.responses.SequenceLoadedSPIResponse;
+import com.mgx.spi.responses.XEDPropertiesUpdateResponse;
+import com.mgx.spi.responses.XPulseActualValuesSPIResponse;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,7 +50,8 @@ import java.util.logging.Logger;
  *
  * @author Asaf
  */
-public class XedArrayProxy extends EventsHandler implements  NewConnectionHandler {
+//TODO: have different handler to Reponse and Notifications. i.e replace InboundParcelHandler;
+public class XedArrayProxy implements ResponseHandler, NewConnectionHandler {
 
     public static final int UID = 66677;
     private final ActivityLogger l = new ActivityLogger(XedArrayProxy.class.getName());
@@ -60,27 +60,32 @@ public class XedArrayProxy extends EventsHandler implements  NewConnectionHandle
     private SequenceInfo currentSequence;
     private XEDsProxyServer server = new XEDsProxyServer();
     private ConcurrentHashMap<String, XEDDescriptor> XEDs = new ConcurrentHashMap<>(Configuration.XEDsMaxNum);
-    private ClientsTransmiter transmiter;
+    private CFPGADescriptor cFPGA = null;
+    /**
+     * The trasmiter holds all the connections to the clients
+     */
+    private ClientsTransmiter clientsTransmiter;
+    private ServiceProviderConnector SPConnector;
+    private ConnectionBase SPIConnection;
 
-    private class XEDDescriptor {
+    /*private class XEDDescriptor {
 
-        public XEDDescriptor(XEDInfo info, SPIServerConnection connection) {
-            this.info = info;
-            this.connection = connection;
+     public XEDDescriptor(XEDDescriptor info, SPIServerConnection connection) {
+     this.info = info;
+     this.connection = connection;
 
-        }
-        public XEDInfo info;
-        public SPIServerConnection connection;
+     }
+     public XEDDescriptor info;
+     public SPIServerConnection connection;
         
-        //TODO: change to XEDState
-        public boolean isMarkedForRunning = false;
-        public boolean isSequenceLoaded = false;
-        public boolean isRunning = false;
+     //TODO: change to XEDState
+     public boolean isMarkedForRunning = false;
+     public boolean isSequenceLoaded = false;
+     public boolean isRunning = false;
 
-    }
-
+     }*/
     public XedArrayProxy(ClientsTransmiter transmiter) {
-        this.transmiter = transmiter;
+        this.clientsTransmiter = transmiter;
 
     }
 
@@ -95,7 +100,14 @@ public class XedArrayProxy extends EventsHandler implements  NewConnectionHandle
         server.start();
     }
 
-    public void dispatchXEDCommand(Command c) {
+    public void setServiceProviderConnector(ServiceProviderConnector connector) {
+        this.SPConnector = connector;
+    }
+
+    private boolean validateSettings(CFPGADescriptor cFPGA) {
+        l.logD("Settings are valid");
+        //TODO:Implement settings validator
+        return true;
 
     }
 
@@ -104,82 +116,47 @@ public class XedArrayProxy extends EventsHandler implements  NewConnectionHandle
         String errMsg = null;
         switch (command.getName()) {
 
-            case "GetXEDsCommand":
-                l.logE("*****Sending XEDsResponse");
-                Event event = new GetXEDsResponse(command.getSenderUID(), this.getName(), getAsXEDInfo());
-                connection.transmit(event);
+            case "GetMGXNodesCommand":
+                connection.transmit(new MGXNodesResponse(command.getSenderUID(), this.getName(), new CFPGADescriptor[]{cFPGA}));
+
                 result = true;
                 break;
-            case "XEDSetPropertyCommand": {
-                XEDSetPropertyCommand updateCommand = (XEDSetPropertyCommand) command;
-                XEDPropertyValueUpdate property = updateCommand.getData();
-                XEDDescriptor xed = XEDs.get(property.XEDName);
+            case "UpdateSettingsMGXCommand": {
+                //TODO: error handling, if cFPGA doesn't match or empty
+                UpdateSettingsMGXCommand updateCommand = (UpdateSettingsMGXCommand) command;
+                CFPGADescriptor _cFPGA = updateCommand.getData()[0];
+                //TODO:Error handling on bad settings
+                validateSettings(cFPGA);
 
-                if (xed != null) {
-                    for (XEDPropertyInfo prop : xed.info.properties) {
-                        if (prop.name.equals(property.name)) {
-                            SetPropertyXEDCommand setCommand = new SetPropertyXEDCommand(property);
-                            try {
-                                xed.connection.transmit(setCommand);
-                            } catch (InterruptedException ex) {
-                                ex.printStackTrace();
-                            }
-                            //server.sendMessageToClient(xed.UID, command);
-                            Event response = new CommandOKResponse(command, this.getName());
-                            connection.transmit(response);
-                            result = true;
-                        }
-                    }
-                    if (!result) {
-                        errMsg = "XED " + property.XEDName + " (UID " + property.XEDUID + ")"
-                                + "Dosn't support the property:" + property.name;
-                    }
-                } else {
-                    errMsg = "Can't find XED " + property.XEDName + " (UID " + property.XEDUID + ")";
-                    l.logE(errMsg);
+                //save settings
+                SaveLastCFPGASettingsSPCommand cmd = new SaveLastCFPGASettingsSPCommand(UID, this.getName(), cFPGA);
+                cmd.setAction(new CommandAction() {
 
-                }
+                    @Override
+                    public void executeOnResponse() {
+                        l.logD("Settings saved on server successfuly");
+                    }
+
+                    @Override
+                    public void executeOnError() {
+                        l.logE("Error saving cFPGA settings ");
+                    }
+
+                });
+                //TODO: error handling on transmit failure
+                SPConnector.transmitAndExecute(cmd);
+                SPIConnection.transmit(new UpdateXEDsPropertiesSPICommand(cFPGA.getXEDs()));
+                connection.transmit(new CommandOKResponse(command, this.getName()));
 
                 break;
             }
-            case "UpdateXed":
-                XED xedo = new XED(1);
-                //xedo.voltage.idleVoltage.
-                break;
-            case "XEDSetPropertiesCommand": {
-                //TODO: add support for same property in different XEDs(UID) 
-                XEDSetPropertiesCommand propertiesCommand = (XEDSetPropertiesCommand) command;
-                XEDPropertyValueUpdate properties[] = propertiesCommand.getData();
 
-                for (XEDPropertyValueUpdate property : properties) {
-
-                    XEDDescriptor xed = getpropertyXED(property);
-
-                    if (xed != null) {
-                        for (XEDPropertyInfo prop : xed.info.properties) {
-                            if (prop.name.equals(property.name)) {
-                                SetPropertyXEDCommand setCommand = new SetPropertyXEDCommand(property);
-                                try {
-                                    xed.connection.transmit(setCommand);
-                                } catch (InterruptedException ex) {
-                                    ex.printStackTrace();
-                                }
-                                //server.sendMessageToClient(xed.UID, command);
-                                Event response = new CommandOKResponse(command, this.getName());
-                                connection.transmit(response);
-                                result = true;
-                            }
-                        }
-                        if (!result) {
-                            errMsg = "XED " + property.XEDName + " (UID " + property.XEDUID + ")"
-                                    + "Dosn't support the property:" + property.name;
-                        }
-                    } else {
-                        errMsg = "Can't find XED " + property.XEDName + " (UID " + property.XEDUID + ")";
-                        l.logE(errMsg);
-
-                    }
-                } //for
+            case "SequenceAcquisitionMGXCommand": {
+                SequenceAcquisitionMGXCommand saCommand = (SequenceAcquisitionMGXCommand) command;
+                SPIConnection.transmit(new AcuireSequenceSPICommand(saCommand.getSenderUID(), saCommand.getSequence()));
+                if (saCommand.isSWAcquisition()) {
+                    SPIConnection.transmit(new RunSequenceSPICommand());
+                }
                 break;
             }
             default:
@@ -195,140 +172,155 @@ public class XedArrayProxy extends EventsHandler implements  NewConnectionHandle
         return result;
     }
 
-    private XEDDescriptor getpropertyXED(XEDPropertyValueUpdate property) {
-        return XEDs.get(property.XEDName);
-    }
-
     @Override
-    public synchronized void handleEvent(Event response, ConnectionBase connection) {
+    public synchronized void handleResponse(Response response, ConnectionBase connection) {
         l.logI("got response " + response.getName());
-        switch (response.getName()) {
-            case "SendInfoXEDResponse": {
-                SendInfoXEDResponse info = (SendInfoXEDResponse) response;
-                if (addXed(info.getData(), (SPIServerConnection) connection)) {
-                    //server.addConnectoin(connection, info.getData().UID);
+
+        try {
+            switch (response.getName()) {
+
+                case "CFPGADescriptorSPIResponse": {
+
+                    cFPGA = ((CFPGADescriptorSPIResponse) response).getData();
+                    l.logD("Now connected with cFPGA \n" + cFPGA.toString());
+
+                    //load last settings
+                    //SPConnector.request();
+                    LoadLastCFPGASettingsSPCommand cmd = new LoadLastCFPGASettingsSPCommand(UID, this.getName(), cFPGA.getUID());
+                    cmd.setAction(new CommandAction() {
+
+                        @Override
+                        public void executeOnResponse() {
+                            try {
+                                SPIConnection.transmit(new UpdateXEDsPropertiesSPICommand(cmd.getResponseData().getXEDs()));
+                            } catch (InterruptedException ex) {
+                                throw new RuntimeException("Failed to transmit SetPropertiesSPICommand", ex);
+                            }
+                        }
+
+                        @Override
+                        public void executeOnError() {
+                            l.logD("No settings loadded from service provider. Skipping last system state resume");
+                        }
+                    });
+                    SPConnector.transmitAndExecute(cmd);
+
+                    break;
+
+                }
+                case "XEDPropertiesUpdateResponse": {
+                    XEDPropertiesUpdateResponse updateResponse = (XEDPropertiesUpdateResponse) response;
+                    clientsTransmiter.notifyAllClients(new XEDUpdateNotification(this.getName(),
+                            new CFPGADescriptor(cFPGA.getName(), cFPGA.getUID(), new XEDDescriptor[]{updateResponse.getData()})));
+                    break;
                 }
 
-                break;
-            }
-            case "XEDPropertyValueUpdateNotification": {
-                XEDInfo info = (XEDInfo) response.data;
-                StringBuilder tmp = new StringBuilder("\n " + info.Name + ":\n");
-                for (XEDPropertyInfo prop : info.properties) {
-                    tmp.append("property " + prop.name + " value=" + prop.value + "\n");
-                }
-                l.logE("XEDsProxy::handleREsponse:Got XEDPropertyValueUpdateNotification:" + tmp.toString());
-                updateXED(info);
-                break;
-            }
-            case "PropertyValueUpdateXEDNotification": {
-                PropertyValueUpdateXEDNotification IncommingNotification
-                        = (PropertyValueUpdateXEDNotification) response;
-                XEDUpdateNotification outgoingNotificatoin
-                        = new XEDUpdateNotification(this.getName(),
-                                IncommingNotification.getData());
-                //server.sendMessageToAllClients(outgoingNotificatoin);
-                transmiter.notifyAllClients(outgoingNotificatoin);
-                break;
-            }
-            case "SequenceLoadedXEDResponse": {
-
-                SequenceLoadedXEDResponse resp = (SequenceLoadedXEDResponse) response;
-                l.logD("XED " + resp.dispatcherName + " loaded sequence " + resp.getData());
-                //TODO: check that sequence ID coresponde between response and the waiting list
-                XEDDescriptor xed = XEDs.get(resp.dispatcherName);
-                xed.isSequenceLoaded = true;
-                if (allXEDsLoadedSequence()) {
-                    l.logD("All XEDs loaded sequence...starting sequence");
-                    runSequence();
+                case "XPulseActualValuesSPIResponse": {
+                    XPulseActualValuesSPIResponse xpulseUpdate = (XPulseActualValuesSPIResponse) response;
+                    clientsTransmiter.notifyAllClients(
+                            new XPulseActualRunValuesNotification(
+                                    this.getName(), xpulseUpdate.getSequenceID(), cFPGA.getUID(), xpulseUpdate.getXPulse()));
+                    break;
                 }
 
-                break;
+                case "SequenceExecutionCompleteSPIREsponse": {
+                    SequenceExecutionCompleteSPIREsponse exeDone = (SequenceExecutionCompleteSPIREsponse) response;
+                    clientsTransmiter.notifyAllClients(new SequenceCompleteNotification(this.getName(), exeDone.getSequenceID(), exeDone.getcFPGAUID()));
+                    break;
+                }
+                case "SequenceLoadedSPIResponse": {
+                    SequenceLoadedSPIResponse seqLoadded = (SequenceLoadedSPIResponse) response;
+                    clientsTransmiter.notifyAllClients(new SequenceLoadedNotification(this.getName(), seqLoadded.getSequenceUID(), seqLoadded.getcFPGAUID()));
+                    break;
+                }
+                default: {
+                    l.logW("Command " + response.getName() + " not supported");
+                    new Exception().printStackTrace();
+                }
             }
-            case "SequenceExecutionDoneXEDNotification":
-            {
-                SequenceExecutionDoneXEDNotification notification = (SequenceExecutionDoneXEDNotification)response;
-                XEDDescriptor xed = XEDs.get(notification.dispatcherName);
-                l.logD("XED "+xed.info.Name+" ("+xed.info.UID+") finished executing of sequence # "+ notification.getData().sequenceID);
-                xed.isRunning = false;
-                xed.isMarkedForRunning = false;
-                xed.isSequenceLoaded = false;
+        } catch (InterruptedException ex) {
+            l.logE("Failed to transmit..");
+            ex.printStackTrace();
+        } catch (RuntimeException ex) {
+            if (ex.getCause() != null) {
+                l.logE(ex.getCause().getMessage());
+            } else {
+                l.logE(ex.getMessage());
+            }
+            ex.printStackTrace();;
+        }
+
+
+        /*
+         switch (response.getName()) {
+         case "SendInfoXEDResponse": {
+         SendInfoXEDResponse info = (SendInfoXEDResponse) response;
+         if (addXed(info.getData(), (SPIServerConnection) connection)) {
+         //server.addConnectoin(connection, info.getData().UID);
+         }
+
+         break;
+         }
+         case "XEDPropertyValueUpdateNotification": {
+         XEDDescriptor info = (XEDDescriptor) response.data;
+         StringBuilder tmp = new StringBuilder("\n " + info.Name + ":\n");
+         for (XEDPropertyInfo prop : info.properties) {
+         tmp.append("property " + prop.name + " value=" + prop.value + "\n");
+         }
+         l.logE("XEDsProxy::handleREsponse:Got XEDPropertyValueUpdateNotification:" + tmp.toString());
+         updateXED(info);
+         break;
+         }
+         case "PropertyValueUpdateXEDNotification": {
+         PropertyValueUpdateXEDNotification IncommingNotification
+         = (PropertyValueUpdateXEDNotification) response;
+         XEDUpdateNotification outgoingNotificatoin
+         = new XEDUpdateNotification(this.getName(),
+         IncommingNotification.getData());
+         //server.sendMessageToAllClients(outgoingNotificatoin);
+         transmiter.notifyAllClients(outgoingNotificatoin);
+         break;
+         }
+         case "SequenceLoadedXEDResponse": {
+
+         SequenceLoadedXEDResponse resp = (SequenceLoadedXEDResponse) response;
+         l.logD("XED " + resp.dispatcherName + " loaded sequence " + resp.getData());
+         //TODO: check that sequence ID coresponde between response and the waiting list
+         XEDDescriptor xed = XEDs.get(resp.dispatcherName);
+         xed.isSequenceLoaded = true;
+         if (allXEDsLoadedSequence()) {
+         l.logD("All XEDs loaded sequence...starting sequence");
+         runSequence();
+         }
+
+         break;
+         }
+         case "SequenceExecutionDoneXEDNotification":
+         {
+         SequenceExecutionDoneXEDNotification notification = (SequenceExecutionDoneXEDNotification)response;
+         XEDDescriptor xed = XEDs.get(notification.dispatcherName);
+         l.logD("XED "+xed.info.Name+" ("+xed.info.UID+") finished executing of sequence # "+ notification.getData().sequenceID);
+         xed.isRunning = false;
+         xed.isMarkedForRunning = false;
+         xed.isSequenceLoaded = false;
                 
-                if(allXEDSFinishedSequenceExecution()) {
+         if(allXEDSFinishedSequenceExecution()) {
                     
-                    transmiter.notifyAllClients(
-                            new SequenceCompleteNotificatoin(
-                                    this.getName(), 
-                                    notification.getData().sequenceID));
-                    this.isSequenceRunning = false;
-                }
-                break;
+         transmiter.notifyAllClients(
+         new SequenceCompleteNotificatoin(
+         this.getName(), 
+         notification.getData().sequenceID));
+         this.isSequenceRunning = false;
+         }
+         break;
                 
-            }
-        }
-
-    }
-
-    private synchronized boolean addXed(XEDInfo XED, SPIServerConnection connection) {
-        XEDDescriptor descriptor = new XEDDescriptor(XED, connection);
-        l.logI("trying to add XED " + XED.Name);
-        boolean isAdded = false;
-        if (XEDs.putIfAbsent(XED.Name, descriptor) != null) {
-            l.logW("XED " + XED.Name + " already exsits ignoring");
-        } else {
-            l.logI("XED " + XED.Name + " with " + XED.properties.length + " properties added");
-            isAdded = true;
-
-        }
-        return isAdded;
-
+         }
+         }*/
     }
 
     //private ArrayList<XEDDescriptor> xedsNotificationList = new ArrayList<>(8);
     void loadAndRunSequence(SequenceInfo seq) {
-        if (!isSequenceRunning) {
-            isSequenceRunning = true;
-            currentSequence = seq;
-
-            XEDs.values().stream().forEach(xed -> {
-                for (XPulseInfo pulse : seq.pulses) {
-                    //check if xed need to run sequence
-                    if (pulse.XEDNum == xed.info.UID) {
-                        if (xed.isMarkedForRunning) {
-                            l.logD("XED " + xed.info.Name + " was already marked... continue");
-                            continue;
-                        }
-
-                        xed.isMarkedForRunning = true;
-                        try {
-                                //notify xed to load sequence
-
-                            xed.connection.transmit(new LoadSequenceXEDCommand(UID, this.getName(), seq));
-                        } catch (InterruptedException ex) {
-                            l.logE("Failed to send sequence to xed #" + xed.info.UID);
-                            //TODO: abort sequance (send aboart to other xeds and send error back to client)
-                            ex.printStackTrace();
-                        }
-
-                    }
-                }
-            });
-                //waitForAllXedsToLoadSequance();
-
-        }
-    }
-
-    private synchronized void updateXED(XEDInfo info) {
-        XEDDescriptor oldDescriptor = XEDs.get(info.Name);
-        if (oldDescriptor != null) {
-            XEDDescriptor newDescriptor = new XEDDescriptor(info, oldDescriptor.connection);
-            if (XEDs.replace(info.Name, oldDescriptor, newDescriptor)) {
-                l.logI("XED " + info.Name + " was updated");
-                notifyClients_update(info);
-            } else {
-                l.logW("XED " + info.Name + " not updated (either not exsist or equal");
-            }
-        }
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
@@ -336,24 +328,8 @@ public class XedArrayProxy extends EventsHandler implements  NewConnectionHandle
         return this.getClass().getSimpleName();
     }
 
-    private void notifyClients_update(XEDInfo info) {
-        //transmiter.notifyAllClients(new XEDUpdateNotification(this.getClass().getName(), info));
-    }
-
     public Response getXEDs() {
         return null;
-    }
-
-    private XEDInfo[] getAsXEDInfo() {
-        XEDInfo xeds[] = new XEDInfo[XEDs.size()];
-        int i = 0;
-        Enumeration elements = XEDs.elements();
-        while (elements.hasMoreElements()) {
-            XEDDescriptor xed = (XEDDescriptor) elements.nextElement();
-            xeds[i++] = xed.info;
-
-        }
-        return xeds;
     }
 
     @Override
@@ -361,8 +337,9 @@ public class XedArrayProxy extends EventsHandler implements  NewConnectionHandle
         boolean result = false;
         try {
             wait(200);
-            Command getXed = new GetInfoXEDCommand();
-            connection.transmit(getXed);
+            Command getXeds = new CFPGAIndetifySPICommand();
+            connection.transmit(getXeds);
+            this.SPIConnection = connection;
             result = true;
         } catch (InterruptedException ex) {
             l.logE("Failed to send command to XED");
@@ -374,33 +351,17 @@ public class XedArrayProxy extends EventsHandler implements  NewConnectionHandle
 
     private boolean allXEDsLoadedSequence() {
 
-        if (XEDs.values().stream().allMatch((xed) -> (xed.isMarkedForRunning && xed.isSequenceLoaded))) {
-            return true;
-        }
+        throw new UnsupportedOperationException("not implemented");
 
-        return false;
     }
-    
+
     private boolean allXEDSFinishedSequenceExecution() {
-        if(XEDs.values().stream().allMatch(xed->(!xed.isRunning))) {
-            return true;
-        }
-        return false;
+        throw new UnsupportedOperationException("not implemented");
     }
 
     private void runSequence() {
-        XEDs.values().stream().forEach(xed -> {
-            if (xed.isMarkedForRunning) {
-                l.logD("Sending runSequenceXEDCommand to " + xed.info.Name + "(" + xed.info.UID + ")");
-                try {
-                    xed.connection.transmit(new runSequenceXEDCommand());
-                    xed.isRunning = true;
-                } catch (InterruptedException ex) {
-                    l.logE("Failed to send command....");
-                    ex.printStackTrace();
-                }
-            }
-        });
+        throw new UnsupportedOperationException("not implemented");
 
     }
+
 }

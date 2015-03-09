@@ -21,6 +21,14 @@
                 <id>jar</id>
             </reference>
             <reference>
+                <foreign-project>MGX_ServiceProvider-1</foreign-project>
+                <artifact-type>jar</artifact-type>
+                <script>build.xml</script>
+                <target>jar</target>
+                <clean-target>clean</clean-target>
+                <id>jar</id>
+            </reference>
+            <reference>
                 <foreign-project>MGX_project_shared_libraries</foreign-project>
                 <artifact-type>jar</artifact-type>
                 <script>build.xml</script>

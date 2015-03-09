@@ -3,17 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mgx.xeds.events;
+package com.mgx.spi.responses;
 
-import com.mgx.shared.XEDInfo;
+import com.mgx.shared.XEDDescriptor;
 import com.mgx.shared.events.Notification;
 
 
-public class XEDPropertyValueUpdateNotification extends XEDNotification {
+public class XEDPropertiesUpdateResponse extends SPIResponse {
 
     static int eventUID = 134;
-    public XEDPropertyValueUpdateNotification(String dispatcherName, XEDInfo Data) {
-        super(dispatcherName, eventUID, Data, XEDPropertyValueUpdateNotification.class.getSimpleName());
+    public XEDPropertiesUpdateResponse(String dispatcherName, XEDDescriptor Data) {
+        super(dispatcherName, eventUID, Data, XEDPropertiesUpdateResponse.class.getSimpleName());
     }
 
     @Override
@@ -25,8 +25,8 @@ public class XEDPropertyValueUpdateNotification extends XEDNotification {
     }
 
     @Override
-    public XEDInfo getData() {
-        return (XEDInfo)data;
+    public XEDDescriptor getData() {
+        return (XEDDescriptor)data;
     }
 
      

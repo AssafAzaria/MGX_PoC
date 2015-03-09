@@ -5,7 +5,7 @@
  */
 package mgxtests;
 
-import com.mgx.shared.events.Event;
+import com.mgx.shared.events.Response;
 import com.mgx.shared.loggers.ActivityLogger;
 import com.mgx.shared.networking.client.ConnectionBase;
 
@@ -17,7 +17,7 @@ public class LocalEventHandler2 extends LocalEventHandler {
     }
     
     @Override
-    public void handleEvent(Event event, ConnectionBase connection) {
+    public void handleResponse(Response event, ConnectionBase connection) {
         l.logI(getName() +"got event > " + event.toString());
     }
     

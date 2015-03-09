@@ -5,14 +5,17 @@
  */
 package mgxtests;
 
-import com.mgx.shared.XEDInfo;
-import com.mgx.shared.events.Event;
-import com.mgx.shared.events.SequenceIDResponse;
+import com.mgx.shared.CFPGADescriptor;
+import com.mgx.shared.XEDDescriptor;
+import com.mgx.shared.events.CommandOKResponse;
+import com.mgx.shared.events.MGXNodesResponse;
+import com.mgx.shared.events.Response;
 import com.mgx.shared.loggers.ActivityLogger;
-import com.mgx.shared.networking.EventsHandler;
+import com.mgx.shared.networking.ResponseHandler;
 import com.mgx.shared.networking.client.ConnectionBase;
 import com.mgx.shared.sequences.SequenceInfo;
 import com.mgx.shared.serviceprovider.responses.LoadSequenceResponse;
+import com.mgx.shared.serviceprovider.responses.LoadSettingsResponse;
 import com.mgx.shared.serviceprovider.responses.StoreSequenceResponse;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -21,7 +24,7 @@ import java.util.concurrent.locks.Lock;
  *
  * @author Asaf
  */
-public class LocalEventHandler extends EventsHandler{
+public class LocalEventHandler implements ResponseHandler{
     private final int num;
     private final ActivityLogger l = new ActivityLogger(LocalEventHandler.class.getName());
     private Lock lock;
@@ -29,21 +32,39 @@ public class LocalEventHandler extends EventsHandler{
     
     public int sequanceID = -1;
     public SequenceInfo sequence=null;
-    public XEDInfo xeds[];
+    public XEDDescriptor xeds[];
+    
+    public CFPGADescriptor[] cFPGAs;
+    public CFPGADescriptor loaddedSettings;
     public LocalEventHandler(int num) {
         this.num = num;
         
     }
     @Override
-    public void handleEvent(Event event, ConnectionBase connection) {
+    public void handleResponse(Response event, ConnectionBase connection) {
         l.logI(getName() +"got event > " + event.getName() +": "+event.dataToString());
         switch (event.getName()) {
+            case "CommandOKResponse":
+                
+                l.logD(((CommandOKResponse)event).toString());
+                break;
+            case "MGXNodesResponse": {
+                    MGXNodesResponse response = (MGXNodesResponse)event;
+                    cFPGAs = response.getData();
+                    
+                break;
+            }
+            case "LoadSettingsResponse": {
+                LoadSettingsResponse response = (LoadSettingsResponse)event;
+                loaddedSettings = response.getData();
+                break;
+            }
             case "GetXEDsResponse":
-                xeds = (XEDInfo[])event.data;
+                xeds = (XEDDescriptor[])event.data;
                 break;
             case "SequenceIDResponse":
                
-                sequanceID = ((SequenceIDResponse)event).getData().intValue();
+                
                 break;
             case "LoadSequenceResponse":
                 sequence = ((LoadSequenceResponse)event).getSeqeuence();

@@ -24,13 +24,16 @@ public class Main {
             public void run() {
                 if (true) {
                     try {
-                        TubeXED xed1 = new TubeXED();
-                        xed1.start();
+                        //TubeXED xed1 = new TubeXED();
+                        //xed1.start();
                         //xed1.runEngine();
-                        GeneratorXED xed2 = new GeneratorXED();
-                        xed2.start();
+                        //GeneratorXED xed2 = new GeneratorXED();
+                        //xed2.start();
                         //xed2.runEngine();
                         
+                        
+                        cFPGA _cFPGA = new cFPGA();
+                        _cFPGA.start();
                     } catch (IOException ex) {
                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                     }

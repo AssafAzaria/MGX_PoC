@@ -5,7 +5,7 @@
  */
 package com.mgx.servicesProvider;
 
-import com.mgx.shared.Configuration;
+import com.mgx.shared.CFPGADescriptor;
 import com.mgx.shared.loggers.ActivityLogger;
 import com.mgx.shared.sequences.SequenceInfo;
 import java.io.File;
@@ -18,11 +18,7 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
-import java.util.function.BiPredicate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /**
@@ -38,9 +34,11 @@ public class FileSystemDataProvider implements DataProvider{
     private static final String SEQUENCE_PREFIX = "sequnce";
     private static final String NEXT_ID_STORAGE_FILENAME = "nextSequenceID.txt";
     private static final String NEXT_ID_KEY = "NextSequenceID";
-    Path NextIdStoragePath;
+    private Path NextIdStoragePath;
     
     
+    private static final String SETTINGS_FILE_PREFIX = "settings";
+    private static final String CLIENT_DATA_PREFIX = "client";
     
     
      private void createNewStorage(Path path) throws IOException {
@@ -54,23 +52,25 @@ public class FileSystemDataProvider implements DataProvider{
         Files.write(path, structure.toString().getBytes() );
         
     }
-     private Object loadObject(String fileName) {
+     private Object loadObject(String filename) throws DataRepositoryErrorException{
         FileInputStream in = null;
         ObjectInputStream stream = null;
         Object objectFromFile = null;
         try {
             
-            in = new FileInputStream(fileName);
+            in = new FileInputStream(filename);
             stream = new ObjectInputStream(in);
             objectFromFile = stream.readObject();
             
         } catch (FileNotFoundException ex) {
-            l.logE("Couldn't create a file..");
+            l.logE("Couldn't open a file..");
             ex.printStackTrace();
+            throw new DataRepositoryErrorException("Couldn't open a file "+filename, ex);
         } catch (IOException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
+            throw new DataRepositoryErrorException("Couldn't read file", ex);
         } finally {
             try {
                 if (in != null) {
@@ -82,15 +82,16 @@ public class FileSystemDataProvider implements DataProvider{
             } catch (IOException ex) {
                 l.logE("Failed to close streams");
                 ex.printStackTrace();
+                
             }
         }
         return objectFromFile;
     }
      
-     private SequenceInfo loadSequence(Path filePath){
+     private SequenceInfo loadSequence(Path filePath) throws DataRepositoryErrorException{
          return (SequenceInfo)loadObject(filePath.toString());
      } 
-    private boolean storeObject(String fileName, Object data) {
+    private boolean storeObject(String fileName, Object data) throws DataRepositoryErrorException{
         FileOutputStream out = null;
         ObjectOutputStream stream = null;
         boolean result = false;
@@ -104,8 +105,10 @@ public class FileSystemDataProvider implements DataProvider{
         } catch (FileNotFoundException ex) {
             l.logE("Couldn't create a file..");
             ex.printStackTrace();
+            throw new DataRepositoryErrorException("Couldn't create a file", ex);
         } catch (IOException ex) {
             ex.printStackTrace();
+            throw new DataRepositoryErrorException("Couldn't write to file", ex);
         } finally {
             try {
                 if (out != null) {
@@ -119,6 +122,7 @@ public class FileSystemDataProvider implements DataProvider{
                 l.logE("Failed to close streams");
                 ex.printStackTrace();
                 result = false;
+                throw new DataRepositoryErrorException("Failed to close streams", ex);
             }
         }
         
@@ -166,12 +170,18 @@ public class FileSystemDataProvider implements DataProvider{
             Files.list(cwd)
                     .filter(p -> p.getFileName().toString().startsWith(SEQUENCE_PREFIX))
                     .forEach(file -> {
-                        SequenceInfo seq = loadSequence(file);
-                        if (dataByName.containsKey(seq.sequenceName) || dataByUID.containsKey(seq.sequenceId)) {
-                            throw new RuntimeException("data storage is not consistent (same key exsist more then once");
-                        }
-                        dataByName.put(seq.sequenceName, seq);
-                        dataByUID.put(seq.sequenceId, seq);
+                try {
+                    SequenceInfo seq = loadSequence(file);
+                    if ((seq.sequenceName != null && dataByName.containsKey(seq.sequenceName)) || dataByUID.containsKey(seq.sequenceId)) {
+                        throw new RuntimeException("data storage is not consistent (same key exsist more then once");
+                    }
+                    dataByName.put(seq.sequenceName, seq);
+                    dataByUID.put(seq.sequenceId, seq);
+                } catch (DataRepositoryErrorException ex) {
+                    l.logE("failed to load sequence");
+                    ex.printStackTrace();
+                    throw new RuntimeException("Failed to load sequence", ex);
+                }
                         
                     });
         } catch (IOException | NullPointerException ex) {
@@ -188,7 +198,7 @@ public class FileSystemDataProvider implements DataProvider{
     }
     
     private String getSequenceFilename(SequenceInfo seq) {
-        return SEQUENCE_PREFIX+"_"+seq.sequenceId;
+        return CLIENT_DATA_PREFIX+"_"+SEQUENCE_PREFIX+"_"+seq.sequenceId;
     }
     @Override
     public int storeSequence(SequenceInfo sequence) throws DataRepositoryErrorException {
@@ -243,6 +253,32 @@ public class FileSystemDataProvider implements DataProvider{
         } catch (IOException ex) {
             throw new DataRepositoryErrorException("Failed to delete sequence entry", ex);
         }
+    }
+
+    private String getSettingsFilename(int UID) {
+        return SETTINGS_FILE_PREFIX+"_"+UID;
+    }
+    @Override
+    public void storeCFPGASettings(CFPGADescriptor cFPGA) throws DataRepositoryErrorException{
+        storeObject(getSettingsFilename(cFPGA.getUID()), cFPGA);
+    }
+
+    @Override
+    public CFPGADescriptor loadCFPGASettings(int cFPGAUID) throws DataRepositoryErrorException {
+        return (CFPGADescriptor)loadObject(getSettingsFilename(cFPGAUID));
+    }
+
+    private String getClientSettingsFilename(String settingsName) {
+        return CLIENT_DATA_PREFIX+"_"+SETTINGS_FILE_PREFIX+"_"+settingsName;
+    }
+    @Override
+    public void storeClientSettings(String settingName, CFPGADescriptor cFPGA) throws DataRepositoryErrorException {
+        storeObject(getClientSettingsFilename(settingName), cFPGA);
+    }
+
+    @Override
+    public CFPGADescriptor loadClientSettings(String settingsName) throws DataRepositoryErrorException {
+        return (CFPGADescriptor)loadObject(getClientSettingsFilename(settingsName));
     }
     
 }

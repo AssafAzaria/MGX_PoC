@@ -5,6 +5,7 @@
  */
 package com.mgx.servicesProvider;
 
+import com.mgx.shared.CFPGADescriptor;
 import com.mgx.shared.sequences.SequenceInfo;
 
 /**
@@ -48,4 +49,35 @@ public interface DataProvider {
      * @throws DataRepositoryErrorException if sequence not exists
      */
     public void deleteSequence(int sequenceUID) throws DataRepositoryErrorException;
+    
+    /**
+     * Store the settings of the given controller cFPGA
+     * @param cFPGA the controller settings
+     * @throws com.mgx.servicesProvider.DataRepositoryErrorException on error
+     */
+    public void storeCFPGASettings(CFPGADescriptor cFPGA) throws DataRepositoryErrorException;
+    
+    /**
+     * Load the last saved settings of a specific cFPGA
+     * @param cFPGAUID the UID of the cFPGA to load
+     * @return the settings, or null if given UID is not found
+     * @throws com.mgx.servicesProvider.DataRepositoryErrorException on error
+     */
+    public CFPGADescriptor loadCFPGASettings(int cFPGAUID) throws DataRepositoryErrorException;
+    
+    /**
+     * Store clients settings set
+     * @param settingName name of settings set 
+     * @param cFPGA the settings to store
+     * @throws DataRepositoryErrorException on error
+     */
+    public void storeClientSettings(String settingName, CFPGADescriptor cFPGA) throws DataRepositoryErrorException;
+    
+    /**
+     * Load settings set by String identifier
+     * @param settingsName settings set name
+     * @return the stored settings set
+     * @throws DataRepositoryErrorException on error
+     */
+    public CFPGADescriptor loadClientSettings(String settingsName) throws DataRepositoryErrorException;
 }

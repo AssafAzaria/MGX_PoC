@@ -11,9 +11,8 @@ import java.io.Serializable;
  *
  * @author Asaf
  */
-public interface CommandAction extends Serializable {
+public interface CommandActionsOnResponse extends Serializable {
     public void executeOnResponse();
     public void executeOnError();
-   
     
 }

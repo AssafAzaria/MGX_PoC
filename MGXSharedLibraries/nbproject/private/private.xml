@@ -3,10 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXSharedLibraries/src/com/mgx/shared/commands/GetMachineLayoutCommand.java</file>
-            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXSharedLibraries/src/com/mgx/shared/commands/StartSequenceCommand.java</file>
-            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXSharedLibraries/src/com/mgx/shared/networking/client/ConnectionBase.java</file>
-            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXSharedLibraries/src/com/mgx/shared/commands/XEDSetPropertiesCommand.java</file>
+            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXSharedLibraries/src/com/mgx/shared/serviceprovider/commands/LoadSettingsSPCommand.java</file>
+            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXSharedLibraries/src/com/mgx/shared/XEDProperty.java</file>
+            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXSharedLibraries/src/com/mgx/shared/commands/CommandsManager.java</file>
+            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXSharedLibraries/src/com/mgx/shared/events/CommandOKResponse.java</file>
+            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXSharedLibraries/src/com/mgx/shared/serviceprovider/commands/getStoredSequencesSPCommand.java</file>
+            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXSharedLibraries/src/com/mgx/shared/CFPGADescriptor.java</file>
+            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXSharedLibraries/src/com/mgx/shared/XEDDescriptor.java</file>
+            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXSharedLibraries/src/com/mgx/shared/networking/server/ServerBase.java</file>
+            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXSharedLibraries/src/com/mgx/shared/events/XEDUpdateNotification.java</file>
+            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXSharedLibraries/src/com/mgx/shared/serviceprovider/responses/mgxprivate/LastCFPGASettingsSPResponse.java</file>
+            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXSharedLibraries/src/com/mgx/shared/sequences/SequenceInfo.java</file>
+            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXSharedLibraries/src/com/mgx/shared/serviceprovider/commands/StoreSettingsSPCommand.java</file>
+            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXSharedLibraries/src/com/mgx/shared/commands/UpdateSettingsMGXCommand.java</file>
+            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXSharedLibraries/src/com/mgx/shared/commands/SequenceAcquisitionMGXCommand.java</file>
+            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXSharedLibraries/src/com/mgx/shared/networking/CommandHandler.java</file>
+            <file>file:/C:/Users/Asaf/Downloads/Thales/MGX_PoC/MGXSharedLibraries/src/com/mgx/shared/networking/client/SPIClientConnection.java</file>
         </group>
     </open-files>
 </project-private>

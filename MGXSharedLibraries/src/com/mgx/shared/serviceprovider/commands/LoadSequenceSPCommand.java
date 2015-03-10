@@ -32,8 +32,8 @@ public class LoadSequenceSPCommand extends Command{
     }
 
     @Override
-    public Class<?> getResponseClass() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Class<LoadSequenceSPCommand> getResponseClass() {
+        return LoadSequenceSPCommand.class;
     }
     
 }

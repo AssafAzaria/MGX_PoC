@@ -39,7 +39,7 @@ public class StoreSettingsSPCommand extends Command{
 
     @Override
     public Class<?> getResponseClass() {
-        return CommandOKResponse.class;
+        return null;
     }
 
     

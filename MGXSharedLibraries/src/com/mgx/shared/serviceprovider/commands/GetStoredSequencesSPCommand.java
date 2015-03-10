@@ -12,11 +12,11 @@ import com.mgx.shared.serviceprovider.responses.StoredSequencesListSPResponse;
  *
  * @author Asaf
  */
-public class getStoredSequencesSPCommand extends Command{
+public class GetStoredSequencesSPCommand extends Command{
 
     static private final int UID = 23126;
-    public getStoredSequencesSPCommand(int senderUID, String senderName) {
-        super(UID, getStoredSequencesSPCommand.class.getSimpleName(), senderUID, senderName, null, CommandType.DataRepositoryCommand);
+    public GetStoredSequencesSPCommand(int senderUID, String senderName) {
+        super(UID, GetStoredSequencesSPCommand.class.getSimpleName(), senderUID, senderName, null, CommandType.DataRepositoryCommand);
     }
 
     @Override

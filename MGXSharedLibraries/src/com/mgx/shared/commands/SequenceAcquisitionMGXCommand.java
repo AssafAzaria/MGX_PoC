@@ -42,7 +42,7 @@ public class SequenceAcquisitionMGXCommand extends Command {
     }
 
     /**
-     * @return the UID of the cFPGA that needs to execute this sequence
+     * @return the UID of the cFPGA that needs to executeOnResponse this sequence
      */
     public int getcFPGAUID() {
         return cFPGAUID;

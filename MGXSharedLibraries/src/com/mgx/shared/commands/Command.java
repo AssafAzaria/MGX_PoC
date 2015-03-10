@@ -20,7 +20,7 @@ public abstract class Command implements Serializable, Transmitable {
     private final int senderUID;
     private final String senderName;
     private final String commandName;
-    private  CommandAction action;
+    private CommandActionsOnResponse resAction;
     private Object responseData;
 
     public enum CommandType {
@@ -41,7 +41,7 @@ public abstract class Command implements Serializable, Transmitable {
     }
 
     /**
-     * 
+     *
      * @param UID commandUID
      * @param commandName string representation of the command
      * @param senderUID sender UID
@@ -55,14 +55,14 @@ public abstract class Command implements Serializable, Transmitable {
     }
 
     public Command(int UID, String commandName, int senderUID,
-            String senderName, Object data, CommandType type, CommandAction action) {
+            String senderName, Object data, CommandType type, CommandActionsOnResponse respActions) {
         this.commandUID = UID;
         this.senderUID = senderUID;
         this.senderName = senderName;
         this.data = data;
         this.type = type;
         this.commandName = commandName;
-        this.action = action;
+        this.resAction = respActions;
     }
 
     @Override
@@ -116,26 +116,30 @@ public abstract class Command implements Serializable, Transmitable {
         return commandName;
     }
 
-    public void execute() {
-        if (action != null) {
-            action.executeOnResponse();
+    public void executeOnResponse() {
+        if (resAction != null) {
+            resAction.executeOnResponse();
         }
     }
-    
+
     public void handleError() {
-        action.executeOnError();
+        if (resAction != null) {
+            resAction.executeOnError();
+        }
     }
-    
-    public void setAction(CommandAction action) {
-        this.action = action;
+
+    public void setAction(CommandActionsOnResponse action) {
+        this.resAction = action;
     }
+
     public void setResponseData(Object data) {
         this.responseData = data;
     }
-    
+
     public Object getResponseData() {
         return this.responseData;
     }
+
     public static StringBuffer Serialize() {
         throw new UnsupportedOperationException("not implemented");
     }

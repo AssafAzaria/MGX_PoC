@@ -7,6 +7,7 @@ package com.mgx.servicesProvider;
 
 import com.mgx.shared.CFPGADescriptor;
 import com.mgx.shared.sequences.SequenceInfo;
+import java.util.HashMap;
 
 /**
  *
@@ -49,6 +50,13 @@ public interface DataProvider {
      * @throws DataRepositoryErrorException if sequence not exists
      */
     public void deleteSequence(int sequenceUID) throws DataRepositoryErrorException;
+    
+    /**
+     * Get a map of all stored sequences
+     * @return <(int)sequence UID, (string)sequence name>
+     * @throws com.mgx.servicesProvider.DataRepositoryErrorException
+     */
+    public HashMap<Integer, String> getStoredSequences() throws DataRepositoryErrorException;
     
     /**
      * Store the settings of the given controller cFPGA

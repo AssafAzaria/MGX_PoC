@@ -22,11 +22,13 @@ import com.mgx.shared.serviceprovider.commands.DeleteSequenceSPCommand;
 import com.mgx.shared.serviceprovider.commands.LoadSequenceSPCommand;
 import com.mgx.shared.serviceprovider.commands.LoadSettingsSPCommand;
 import com.mgx.shared.serviceprovider.commands.StoreSettingsSPCommand;
+import com.mgx.shared.serviceprovider.commands.GetStoredSequencesSPCommand;
 import com.mgx.shared.serviceprovider.commands.mgxprivate.LoadLastCFPGASettingsSPCommand;
 import com.mgx.shared.serviceprovider.commands.mgxprivate.SaveLastCFPGASettingsSPCommand;
 import com.mgx.shared.serviceprovider.responses.DeleteSequenceResponse;
 import com.mgx.shared.serviceprovider.responses.LoadSequenceResponse;
 import com.mgx.shared.serviceprovider.responses.LoadSettingsResponse;
+import com.mgx.shared.serviceprovider.responses.StoredSequencesListSPResponse;
 import com.mgx.shared.serviceprovider.responses.mgxprivate.LastCFPGASettingsSPResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -100,6 +102,7 @@ public class ServicesProviderManager implements CommandHandler, NewConnectionHan
                 case "StoreSequenceSPCommand": {
                     StoreSequenceSPCommand incoming = (StoreSequenceSPCommand) command;
                     try {
+                        
                         int seqID = db.storeSequence(incoming.getData());
                         connection.transmit(new StoreSequenceResponse(command.getSenderUID(), this.getName(), seqID));
                     } catch (DataRepositoryErrorException ex) {
@@ -130,6 +133,16 @@ public class ServicesProviderManager implements CommandHandler, NewConnectionHan
                         connection.transmit(new CommandErrorResponse(command, this.getName(), ex.getMessage()));
                         ex.printStackTrace();
                     }
+                }
+                
+                case "GetStoredSequencesSPCommand": {
+                    GetStoredSequencesSPCommand getCmd = (GetStoredSequencesSPCommand) command;
+                    try {
+                        connection.transmit(new StoredSequencesListSPResponse(getCmd.getSenderUID(), this.getName(), db.getStoredSequences()));
+                    } catch (DataRepositoryErrorException ex) {
+                        connection.transmit(new CommandErrorResponse(command, this.getName(), "Failed to get stored sequences list"));
+                    }
+                    break;
                 }
                 
                 case "LoadLastCFPGASettingsSPCommand": {

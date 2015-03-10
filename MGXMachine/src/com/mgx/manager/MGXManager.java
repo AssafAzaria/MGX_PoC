@@ -16,6 +16,7 @@ import com.mgx.shared.networking.CommandHandler;
 import com.mgx.shared.networking.client.ConnectionBase;
 import com.mgx.networking.server.MainServer;
 import com.mgx.shared.Configuration;
+import com.mgx.shared.commands.CommandsManager;
 import com.mgx.shared.networking.server.NewConnectionHandler;
 import com.mgx.shared.commands.SetSequnceCommand;
 import com.mgx.shared.commands.StartSequenceCommand;
@@ -43,28 +44,11 @@ public class MGXManager implements CommandHandler, ClientsTransmiter, NewConnect
 
     public SPConnector SPHandler = new SPConnector();
 
-    public class SPConnector implements ResponseHandler, ServiceProviderConnector {
-
-        private final HashMap<String, Command> commands = new HashMap();
-
-        @Override
-        public void handleResponse(Response response, ConnectionBase connectoin) {
-            l.logD("Got response " + response.getName());
-
-            if (response instanceof CommandErrorResponse) {
-                CommandErrorResponse error = (CommandErrorResponse)response;
-                commands.remove(error.getInvokerCommandClassName());
-                l.logE("Command Eror ::"+error.toString());
-            } else {
-                //find the caller command
-                Command cmd = commands.get(response.getClass().getName());
-                if (cmd != null) {
-                    cmd.executeOnResponse();
-                } else {
-                    l.logE("Bad state - no assosiate command found");
-                }
-            }
+    public class SPConnector extends CommandsManager implements  ServiceProviderConnector {
+        public SPConnector() {
         }
+
+       
 
         @Override
         public String getName() {
@@ -73,17 +57,14 @@ public class MGXManager implements CommandHandler, ClientsTransmiter, NewConnect
 
         @Override
         public void request(Command request) throws InterruptedException {
-            serviceProviderLink.transmit(request);
+            this.sendCommand(request, serviceProviderLink);
 
         }
 
         @Override
         public void transmitAndExecute(Command request) throws InterruptedException {
-            commands.put(request.getResponseClass().getName(), request);
+            this.sendCommand(request, serviceProviderLink);
             
-            
-            request.setAction(null);
-            serviceProviderLink.transmit(request);
         }
 
         @Override

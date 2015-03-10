@@ -21,7 +21,7 @@ import com.mgx.networking.server.XEDsProxyServer;
 import com.mgx.shared.CFPGADescriptor;
 import com.mgx.shared.XEDDescriptor;
 import com.mgx.shared.XEDProperty;
-import com.mgx.shared.commands.CommandAction;
+import com.mgx.shared.commands.CommandActionsOnResponse;
 import com.mgx.shared.commands.SequenceAcquisitionMGXCommand;
 import com.mgx.shared.commands.UpdateSettingsMGXCommand;
 import com.mgx.shared.events.CommandOKResponse;
@@ -130,7 +130,7 @@ public class XedArrayProxy implements ResponseHandler, NewConnectionHandler {
 
                 //save settings
                 SaveLastCFPGASettingsSPCommand cmd = new SaveLastCFPGASettingsSPCommand(UID, this.getName(), cFPGA);
-                cmd.setAction(new CommandAction() {
+                cmd.setAction(new CommandActionsOnResponse() {
 
                     @Override
                     public void executeOnResponse() {
@@ -187,7 +187,7 @@ public class XedArrayProxy implements ResponseHandler, NewConnectionHandler {
                     //load last settings
                     //SPConnector.request();
                     LoadLastCFPGASettingsSPCommand cmd = new LoadLastCFPGASettingsSPCommand(UID, this.getName(), cFPGA.getUID());
-                    cmd.setAction(new CommandAction() {
+                    cmd.setAction(new CommandActionsOnResponse() {
 
                         @Override
                         public void executeOnResponse() {

@@ -17,6 +17,7 @@ import com.mgx.shared.sequences.SequenceInfo;
 import com.mgx.shared.serviceprovider.responses.LoadSequenceResponse;
 import com.mgx.shared.serviceprovider.responses.LoadSettingsResponse;
 import com.mgx.shared.serviceprovider.responses.StoreSequenceResponse;
+import com.mgx.shared.serviceprovider.responses.StoredSequencesListSPResponse;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 
@@ -44,6 +45,12 @@ public class LocalEventHandler implements ResponseHandler{
     public void handleResponse(Response event, ConnectionBase connection) {
         l.logI(getName() +"got event > " + event.getName() +": "+event.dataToString());
         switch (event.getName()) {
+            case "StoredSequencesListSPResponse": {
+                StoredSequencesListSPResponse get = (StoredSequencesListSPResponse)event;
+                l.logD(get.toString());
+                break;
+            }
+            
             case "CommandOKResponse":
                 
                 l.logD(((CommandOKResponse)event).toString());

@@ -23,14 +23,10 @@ import com.mgx.shared.events.CommandErrorResponse;
 import com.mgx.shared.events.CommandOKResponse;
 import com.mgx.shared.networking.ResponseHandler;
 import com.mgx.shared.networking.ServiceProviderConnector;
-import com.mgx.shared.networking.Transmitable;
 import com.mgx.shared.networking.client.IPConnection;
 import com.mgx.shared.sequences.SequenceInfo;
-import com.sun.corba.se.impl.activation.ServerMain;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -63,7 +59,7 @@ public class MGXManager implements CommandHandler, ClientsTransmiter, NewConnect
                 //find the caller command
                 Command cmd = commands.get(response.getClass().getName());
                 if (cmd != null) {
-                    cmd.execute();
+                    cmd.executeOnResponse();
                 } else {
                     l.logE("Bad state - no assosiate command found");
                 }
